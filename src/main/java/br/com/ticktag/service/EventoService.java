@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.ticktag.model.EventoVO;
 import br.com.ticktag.repository.EventoRepository;
+import br.com.ticktag.util.ExampleMatcherUtil;
 
 @Service
 public class EventoService {
@@ -27,13 +28,8 @@ public class EventoService {
     }
     
     public List<EventoVO> findByParams(EventoVO evento) {
-    	ExampleMatcher matcher = ExampleMatcher.matching()
-                .withIgnorePaths("id") 
-                .withIgnoreCase(); 
-            
-            Example<EventoVO> example = Example.of(evento, matcher);
-
-            return eventoRepository.findAll(example);
+    	Example<EventoVO> example = Example.of(evento, ExampleMatcherUtil.getCaseInsensitiveAndContainedExampleMatcher());
+        return eventoRepository.findAll(example);
     }
     
     public EventoVO save(EventoVO evento) {

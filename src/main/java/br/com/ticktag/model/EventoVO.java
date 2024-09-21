@@ -2,12 +2,18 @@ package br.com.ticktag.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -19,13 +25,15 @@ public class EventoVO implements Serializable {
 	
 	private Long id;
 	private String nomeEvento;
+	private String statusEvento;
 	private Date dataEvento;
-	private Long idEndereco;
+	private EnderecoVO enderecoVO;
+	private Set<TipoTicketVO> tickets = new HashSet<>();;
 	private Long lotacaoMaxima;
 	private Long classificacaoIdade;
 	
 	@Id
-	@SequenceGenerator(name="TB_EVENTO SEQ", sequenceName="TB_EVENTO_SEQ", allocationSize=1)
+	@SequenceGenerator(name="TB_EVENTO_SEQ", sequenceName="TB_EVENTO_SEQ", allocationSize=1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="TB_EVENTO_SEQ")
 	public Long getId() {
 		return id;
@@ -50,14 +58,6 @@ public class EventoVO implements Serializable {
 		this.dataEvento = dataEvento;
 	}
 	
-	@Column(name="ID_ENDERECO")
-	public Long getIdEndereco() {
-		return idEndereco;
-	}
-	public void setIdEndereco(Long idEndereco) {
-		this.idEndereco = idEndereco;
-	}
-	
 	@Column(name="LOTACAO_MAX")
 	public Long getLotacaoMaxima() {
 		return lotacaoMaxima;
@@ -72,6 +72,32 @@ public class EventoVO implements Serializable {
 	}
 	public void setClassificacaoIdade(Long classificacaoIdade) {
 		this.classificacaoIdade = classificacaoIdade;
+	}
+	
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="ID_EVENTO", referencedColumnName = "ID", insertable = false, updatable=false)
+	public EnderecoVO getEnderecoVO() {
+		return enderecoVO;
+	}
+	public void setEnderecoVO(EnderecoVO enderecoVO) {
+		this.enderecoVO = enderecoVO;
+	}
+	
+	@Column(name="STATUS_EVENTO")
+	public String getStatusEvento() {
+		return statusEvento;
+	}
+	public void setStatusEvento(String statusEvento) {
+		this.statusEvento = statusEvento;
+	}
+	
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name="ID_EVENTO", referencedColumnName = "ID", insertable = false, updatable=false)
+	public Set<TipoTicketVO> getTickets() {
+		return tickets;
+	}
+	public void setTickets(Set<TipoTicketVO> tickets) {
+		this.tickets = tickets;
 	}
 	
 	
