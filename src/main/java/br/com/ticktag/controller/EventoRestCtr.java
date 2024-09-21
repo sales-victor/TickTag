@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ticktag.model.EventoVO;
 import br.com.ticktag.service.EventoService;
+import br.com.ticktag.util.Retorno;
 
 @RestController
 @RequestMapping("/evento")
@@ -23,7 +24,7 @@ public class EventoRestCtr {
 	private EventoService eventoService;
 
     @GetMapping()
-    public List<EventoVO> findAll() {
+    public Retorno findAll() {
         return eventoService.findAll();
     }
     

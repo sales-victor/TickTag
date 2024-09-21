@@ -24,7 +24,7 @@ public class EnderecoVO implements Serializable {
 	private String complemento;
 	private String bairro;
 	private String cidade;
-	private String uF;
+	private String uf;
 	private String nomeEspaco;
 	
 	@Id
@@ -94,12 +94,13 @@ public class EnderecoVO implements Serializable {
 	}
 	
 	@Column(name="UF")
-	public String getuF() {
-		return uF;
+	public String getUf() {
+		return uf;
 	}
-	public void setuF(String uF) {
-		this.uF = uF;
+	public void setUf(String uf) {
+		this.uf = uf;
 	}
+
 	
 	@Column(name="NOME_ESPACO")
 	public String getNomeEspaco() {
