@@ -1,6 +1,7 @@
 package br.com.ticktag.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -9,15 +10,15 @@ import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import br.com.ticktag.dto.EventoFilterDTO;
 import br.com.ticktag.model.EnderecoVO;
 import br.com.ticktag.model.EventoVO;
 import br.com.ticktag.model.TipoTicketVO;
 import br.com.ticktag.repository.EnderecoRepository;
 import br.com.ticktag.repository.EventoRepository;
 import br.com.ticktag.repository.TipoTicketRepository;
+import br.com.ticktag.util.ApiResponse;
 import br.com.ticktag.util.ExampleMatcherUtil;
-import br.com.ticktag.util.Retorno;
-import br.com.ticktag.util.RetornoBuilder;
 
 @Service
 public class EventoService {
@@ -31,34 +32,80 @@ public class EventoService {
 	@Autowired
 	private TipoTicketRepository tipoTicketRepository;
 	
-    public Retorno findAll() {
-    	Retorno retorno = new Retorno();
-    	List<EventoVO> listEventos= eventoRepository.findAll(); 
-    	retorno = new RetornoBuilder().comMensagem("Eventos encontrados com sucesso").comCodigoMensagem(HttpStatus.OK.value()).comObjeto(listEventos).construir();
-        return retorno;
+    public ApiResponse<List<EventoVO>> findAll() {
+    	try {
+    		List<EventoVO> listEvento = eventoRepository.findAll();
+    		if(!listEvento.isEmpty()) {
+    			return ApiResponse.success(listEvento);
+    		} else {
+    			return ApiResponse.error("Eventos não encontrados", HttpStatus.NO_CONTENT);
+    		}
+    	} catch(Exception e) {
+    		return ApiResponse.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    	}
     }
     
-    public EventoVO findById(Long idEvento) throws Exception {
-        return eventoRepository.findById(idEvento).orElseThrow(() -> new Exception("Evento não encontrado."));
+    public ApiResponse<EventoVO> findById(Long idEvento){
+    	
+    	try {
+    		Optional<EventoVO> evento = eventoRepository.findById(idEvento);
+    		if(evento.isPresent()) {
+    			return ApiResponse.success(evento.get());
+    		} else {
+    			return ApiResponse.error("Eventos não encontrados", HttpStatus.NO_CONTENT);
+    		}
+    	} catch(Exception e) {
+    		return ApiResponse.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    	}
+        
     }
     
-    public List<EventoVO> findByParams(EventoVO evento) {
-    	Example<EventoVO> example = Example.of(evento, ExampleMatcherUtil.getCaseInsensitiveAndContainedExampleMatcher());
-        return eventoRepository.findAll(example);
+    public ApiResponse<List<EventoVO>> findByParams(EventoFilterDTO filter) {    
+    	try {
+    		
+            Example<EventoVO> example = Example.of(buildEventoFromFilter(filter), 
+                    ExampleMatcherUtil.getCaseInsensitiveAndContainedExampleMatcher());
+            
+    		List<EventoVO> listaExemplo = eventoRepository.findAll(example);
+    		if(!listaExemplo.isEmpty()) {
+    			return ApiResponse.success(listaExemplo);
+    		} else {
+    			return ApiResponse.error("Eventos não encontrados", HttpStatus.NO_CONTENT);
+    		}
+    	} catch(Exception e) {
+    		return ApiResponse.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    	}
+       
     }
-    
 
-    public EventoVO save(EventoVO evento) {
-        EventoVO newEvento = salvarEvento(evento);
-  
-        EnderecoVO endereco = evento.getEnderecoVO();
-        endereco.setIdEvento(newEvento.getId());
-        newEvento.setEnderecoVO(enderecoRepository.save(endereco));
+    private EventoVO buildEventoFromFilter(EventoFilterDTO filter) {
+        EventoVO evento = new EventoVO();
+        evento.setClassificacaoIdade(filter.getClassificacaoIdade());
+        evento.setDataEvento(filter.getDataEvento());
+        evento.setLotacaoMaxima(filter.getLotacaoMaxima());
+        evento.setNomeEvento(filter.getNomeEvento());
+        evento.setStatusEvento(filter.getStatusEvento());
+        return evento;
+    }
 
-        Set<TipoTicketVO> listTicket = salvarTickets(evento, newEvento);
-        newEvento.setTickets(listTicket);
 
-        return newEvento;
+    public ApiResponse<EventoVO> save(EventoVO evento) {
+    	
+    	try {
+    		 EventoVO newEvento = salvarEvento(evento);
+    		  
+	        EnderecoVO endereco = evento.getEnderecoVO();
+	        endereco.setIdEvento(newEvento.getId());
+	        newEvento.setEnderecoVO(enderecoRepository.save(endereco));
+
+	        Set<TipoTicketVO> listTicket = salvarTickets(evento, newEvento);
+	        newEvento.setTickets(listTicket);
+	        
+			return ApiResponse.success(newEvento);
+    		
+    	} catch(Exception e) {
+    		return ApiResponse.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    	}
     }
 
 	private Set<TipoTicketVO> salvarTickets(EventoVO evento, EventoVO newEvento) {
@@ -95,24 +142,37 @@ public class EventoService {
 				);
 	}
 
-    public EventoVO update(EventoVO evento) throws Exception {
-        EventoVO newEvento = salvarEventoEdicao(evento);
-  
-        newEvento.setEnderecoVO(enderecoRepository.save(evento.getEnderecoVO()));
+    public ApiResponse<EventoVO> update(EventoVO evento) throws Exception {
+    	
+    	try {
+    		EventoVO newEvento = salvarEventoEdicao(evento);
+    		  
+            newEvento.setEnderecoVO(enderecoRepository.save(evento.getEnderecoVO()));
 
-        Set<TipoTicketVO> listTicket = salvarTickets(evento, newEvento);
-        newEvento.setTickets(listTicket);
+            Set<TipoTicketVO> listTicket = salvarTickets(evento, newEvento);
+            newEvento.setTickets(listTicket);
+	        
+			return ApiResponse.success(newEvento);
+   		
+		   	} catch(Exception e) {
+		   		return ApiResponse.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		   	}
 
-        return newEvento;
     }
 
-    public String deleteById(Long idEvento) throws Exception {
+    public ApiResponse<String> deleteById(Long idEvento) throws Exception {
+    	
+    	try {
+        	enderecoRepository.deleteAll(enderecoRepository.findByIdEvento(idEvento));
+        	tipoTicketRepository.deleteAll(tipoTicketRepository.findByIdEvento(idEvento));
+        	eventoRepository.deleteById(idEvento);
+	        
+			return ApiResponse.error("Evento excluido com sucesso.", HttpStatus.NO_CONTENT);
+   		
+		   	} catch(Exception e) {
+		   		return ApiResponse.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		   	}
 
-    	enderecoRepository.deleteAll(enderecoRepository.findByIdEvento(idEvento));
-    	tipoTicketRepository.deleteAll(tipoTicketRepository.findByIdEvento(idEvento));
-    	eventoRepository.deleteById(idEvento);
-      	
-        return "Evento excluido com sucesso.";
     }
 
 }
