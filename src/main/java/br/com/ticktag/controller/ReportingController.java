@@ -1,7 +1,7 @@
 package br.com.ticktag.controller;
 
+import br.com.ticktag.model.EventoVO;
 import br.com.ticktag.service.ReportingService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,8 +11,11 @@ import java.util.Map;
 @RequestMapping("/reports")
 public class ReportingController {
 
-    @Autowired
-    private ReportingService reportingService;
+    private final ReportingService reportingService;
+
+    public ReportingController(ReportingService reportingService) {
+        this.reportingService = reportingService;
+    }
 
     @GetMapping("/event-capacity-utilization")
     public List<Map<String, Object>> getUtilizacaoCapacidadeEvento() {
@@ -37,5 +40,11 @@ public class ReportingController {
     @GetMapping("/event-age-classification-breakdown")
     public Map<Long, Long> getClassificacaoEtariaEventos() {
         return reportingService.getClassificacaoEtariaEventos();
+    }
+
+    @PostMapping("/create-event")
+    public String createEvent(@RequestBody EventoVO event) {
+        reportingService.saveEvent(event);
+        return "Event created successfully!";
     }
 }

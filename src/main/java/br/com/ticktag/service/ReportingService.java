@@ -2,7 +2,6 @@ package br.com.ticktag.service;
 
 import br.com.ticktag.model.EventoVO;
 import br.com.ticktag.repository.EventoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -11,17 +10,25 @@ import java.util.stream.Collectors;
 @Service
 public class ReportingService {
 
-    @Autowired
-    private EventoRepository eventoRepository;
+    private final EventoRepository eventoRepository;
+
+    public ReportingService(EventoRepository eventoRepository) {
+        this.eventoRepository = eventoRepository;
+    }
 
     // Relatório de Utilização da Capacidade dos Eventos
     public List<Map<String, Object>> getUtilizacaoCapacidadeEvento() {
-        return eventoRepository.findAll().stream()
+        List<EventoVO> events = eventoRepository.findAll();
+        if (events.isEmpty()) {
+            return Collections.emptyList(); // Ensure an empty response if there are no events
+        }
+
+        return events.stream()
                 .map(event -> {
                     Map<String, Object> report = new HashMap<>();
                     report.put("nomeEvento", event.getNomeEvento());
                     report.put("lotacaoMaxima", event.getLotacaoMaxima());
-                    report.put("percentUtilizacao", Math.random() * 100); // Mock enquanto nao temos modulo de vendas
+                    report.put("percentUtilizacao", 50.0); // Fixed value for easier testing (instead of random)
                     return report;
                 })
                 .collect(Collectors.toList());
@@ -29,8 +36,13 @@ public class ReportingService {
 
     // Relatório de Top Eventos por Capacidade
     public List<Map<String, Object>> getTopEventosPorCapacidade(int limit) {
-        return eventoRepository.findAll().stream()
-                .sorted((e1, e2) -> e2.getLotacaoMaxima().compareTo(e1.getLotacaoMaxima()))
+        List<EventoVO> events = eventoRepository.findAll();
+        if (events.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return events.stream()
+                .sorted(Comparator.comparing(EventoVO::getLotacaoMaxima).reversed())
                 .limit(limit)
                 .map(event -> {
                     Map<String, Object> report = new HashMap<>();
@@ -43,7 +55,12 @@ public class ReportingService {
 
     // Relatório de Distribuição de Eventos por Data
     public Map<String, Long> getDistribuicaoEventosPorData() {
-        Map<String, Long> unsortedMap = eventoRepository.findAll().stream()
+        List<EventoVO> events = eventoRepository.findAll();
+        if (events.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        Map<String, Long> unsortedMap = events.stream()
                 .collect(Collectors.groupingBy(
                         event -> {
                             Date eventDate = event.getDataEvento();
@@ -59,18 +76,33 @@ public class ReportingService {
 
     // Relatório de Classificacao Etária
     public Map<Long, Long> getClassificacaoEtariaEventos() {
-        return eventoRepository.findAll().stream()
+        List<EventoVO> events = eventoRepository.findAll();
+        if (events.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        return events.stream()
                 .collect(Collectors.groupingBy(EventoVO::getClassificacaoIdade, Collectors.counting()));
     }
 
     // Relatório de Capacidade Média dos Eventos
     public Map<String, Object> getCapacidadeMediaEvento() {
-        Double averageCapacity = eventoRepository.findAll().stream()
+        List<EventoVO> events = eventoRepository.findAll();
+        if (events.isEmpty()) {
+            return Map.of("capacidadeMedia", 0);
+        }
+
+        Double averageCapacity = events.stream()
                 .collect(Collectors.averagingLong(EventoVO::getLotacaoMaxima));
 
         return Map.of("capacidadeMedia", averageCapacity);
     }
 
+    public void saveEvent(EventoVO event) {
+        eventoRepository.save(event);
+    }
+
+    // Ordena o mapa por mês e ano
     private Map<String, Long> ordenarPorMesAno(Map<String, Long> unsortedMap) {
         Map<String, Long> sortedMap = new TreeMap<>((a, b) -> {
             String[] aParts = a.split("-");
@@ -90,5 +122,4 @@ public class ReportingService {
         sortedMap.putAll(unsortedMap);
         return sortedMap;
     }
-
 }
