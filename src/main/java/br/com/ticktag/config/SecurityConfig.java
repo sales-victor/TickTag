@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,11 +34,11 @@ public class SecurityConfig {
     @Profile("mem")
     public SecurityFilterChain securityFilterChainNoAuth(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll()  // Permitir o acesso ao console do H2
                         .anyRequest().permitAll())  // Permite todos os requests sem autenticação
-                .headers(headers -> headers.frameOptions().sameOrigin())  // Permite o uso de frames para o H2 Console
+                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))  // Permite o uso de frames para o H2 Console
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));  // Stateless
 
         return http.build();
@@ -46,14 +48,14 @@ public class SecurityConfig {
     @Profile("!mem")
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login").permitAll()  // Endpoint de login é público
                         .requestMatchers("/h2-console/**").permitAll()  // Permitir o acesso ao console do H2
                         .requestMatchers("/usuarios/**").hasRole("ADMIN")  // Apenas ADMIN pode acessar /usuarios
                         .anyRequest().authenticated()  // Todos os outros endpoints precisam de autenticação
                 )
-                .headers(headers -> headers.frameOptions().sameOrigin())  // Permite o uso de frames para o H2 Console
+                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))  // Permite o uso de frames para o H2 Console
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));  // JWT é stateless
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -71,3 +73,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
+
