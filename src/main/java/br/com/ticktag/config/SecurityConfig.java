@@ -2,6 +2,7 @@ package br.com.ticktag.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -28,9 +29,22 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    @Profile("mem")
+    public SecurityFilterChain securityFilterChainNoAuth(HttpSecurity http) throws Exception {
+        // Desativa a autenticação quando o perfil 'mem' está ativo
         http
-                // Desabilita CSRF porque estamos usando autenticação JWT (sem cookies, sem estado)
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) // Permite todos os requests sem autenticação
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));  // Stateless
+
+        return http.build();
+    }
+
+    @Bean
+    @Profile("!mem")
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // Segurança habilitada para todos os perfis, exceto o 'mem'
+        http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login").permitAll()  // Endpoint de login é público
