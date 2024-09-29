@@ -31,10 +31,12 @@ public class SecurityConfig {
     @Bean
     @Profile("mem")
     public SecurityFilterChain securityFilterChainNoAuth(HttpSecurity http) throws Exception {
-        // Desativa a autenticação quando o perfil 'mem' está ativo
         http
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) // Permite todos os requests sem autenticação
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/h2-console/**").permitAll()  // Permitir o acesso ao console do H2
+                        .anyRequest().permitAll())  // Permite todos os requests sem autenticação
+                .headers(headers -> headers.frameOptions().sameOrigin())  // Permite o uso de frames para o H2 Console
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));  // Stateless
 
         return http.build();
@@ -43,14 +45,15 @@ public class SecurityConfig {
     @Bean
     @Profile("!mem")
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Segurança habilitada para todos os perfis, exceto o 'mem'
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login").permitAll()  // Endpoint de login é público
+                        .requestMatchers("/h2-console/**").permitAll()  // Permitir o acesso ao console do H2
                         .requestMatchers("/usuarios/**").hasRole("ADMIN")  // Apenas ADMIN pode acessar /usuarios
                         .anyRequest().authenticated()  // Todos os outros endpoints precisam de autenticação
                 )
+                .headers(headers -> headers.frameOptions().sameOrigin())  // Permite o uso de frames para o H2 Console
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));  // JWT é stateless
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
