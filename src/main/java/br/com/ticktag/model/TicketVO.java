@@ -24,6 +24,21 @@ public class TicketVO implements Serializable {
     private EventoVO eventoVo;
     private String hashCode;
 
+    public TicketVO(Long id, UsuarioVO usuario, EventoVO evento, String hashCode) {
+        super();
+        this.id = id;
+        this.usuarioVO = usuario;
+        this.eventoVo = evento;
+        this.hashCode = hashCode;
+    }
+
+    public TicketVO(UsuarioVO usuario, EventoVO evento, String hashCode) {
+        super();
+        this.usuarioVO = usuario;
+        this.eventoVo = evento;
+        this.hashCode = hashCode;
+    }
+
     @Id
     @SequenceGenerator(name = "TB_TICKET_SEQ", sequenceName = "TB_TICKET_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_TICKET_SEQ")
@@ -57,12 +72,12 @@ public class TicketVO implements Serializable {
     }
 
     @Column(name = "HASH_CODE")
-    public String getHashCode(){
+    public String getHashCode() {
         return this.hashCode;
     }
-    
+
     @PrePersist
-    public String setHashCode(){
+    public String setHashCode() {
         String usuario = this.getUsuario().getNome();
         String evento = this.getEvento().getNomeEvento();
         String input = usuario + evento + UUID.randomUUID().toString();
@@ -71,7 +86,7 @@ public class TicketVO implements Serializable {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] encodedHash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
             StringBuilder hexString = new StringBuilder();
-            
+
             for (byte b : encodedHash) {
                 String hex = Integer.toHexString(0xff & b);
                 if (hex.length() == 1) {
@@ -82,7 +97,7 @@ public class TicketVO implements Serializable {
 
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
-            
+
             throw new RuntimeException("Erro ao gerar hash: " + e.getMessage());
 
         }
