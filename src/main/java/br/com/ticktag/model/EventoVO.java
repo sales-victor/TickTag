@@ -1,6 +1,8 @@
 package br.com.ticktag.model;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
@@ -30,6 +32,7 @@ public class EventoVO implements Serializable {
 	private Date dataEvento;
 	private EnderecoVO enderecoVO;
 	private Set<TipoTicketVO> tickets = new HashSet<>();;
+	private List<Long> idTickets = new ArrayList<>();
 	private Long lotacaoMaxima;
 	private Long classificacaoIdade;
 	
@@ -101,7 +104,20 @@ public class EventoVO implements Serializable {
 	public void setTickets(Set<TipoTicketVO> tickets) {
 		this.tickets = tickets;
 	}
-	
+
+	@OneToMany
+	@JoinColumn(name = "ID_TICKETS", referencedColumnName = "ID_TICKETS", insertable = false, updatable = false)
+	public List<Long> getIdTickets(){
+		return this.idTickets;
+	}
+
+	public void setIdTickets(List<Long> idTickets){
+		this.idTickets = idTickets;
+	}
+
+	public void setIdTicket(Long idTicket){
+		this.idTickets.add(idTicket);
+	}	
 		
 	public EventoVO() {
 		super();

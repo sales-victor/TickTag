@@ -2,6 +2,8 @@ package br.com.ticktag.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -22,6 +24,7 @@ public class UsuarioVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
+    private List <Long> idTickets = new ArrayList<>();
     private String nome;
     private LocalDate dataNascimento;
     private String email;
@@ -40,6 +43,19 @@ public class UsuarioVO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Column(name="ID_TICKETS")
+    public List<Long> getIdTickets(){
+        return this.idTickets;
+    }
+
+    public void setIdTickets(List<Long> idTickets){
+        this.idTickets = idTickets;
+    }
+
+    public void setIdTicket(Long idTicket){
+        this.idTickets.add(idTicket);
     }
 
     @Column(name = "NOME", nullable = false)
