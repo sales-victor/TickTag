@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import br.com.ticktag.repository.EventoRepository;
 import br.com.ticktag.repository.TicketRepository;
-import br.com.ticktag.repository.TipoTicketRepository;
 import br.com.ticktag.repository.UsuarioRepository;
 import br.com.ticktag.util.ApiResponse;
 import br.com.ticktag.model.EventoVO;
