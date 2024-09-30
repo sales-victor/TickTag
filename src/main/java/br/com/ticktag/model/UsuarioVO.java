@@ -24,7 +24,7 @@ public class UsuarioVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private List <Long> idTickets = new ArrayList<>();
+    private List<Long> idTickets = new ArrayList<>();
     private String nome;
     private LocalDate dataNascimento;
     private String email;
@@ -46,6 +46,7 @@ public class UsuarioVO implements Serializable {
     }
 
     @Column(name="ID_TICKETS")
+    @JoinColumn(name = "ID_TICKETS", referencedColumnName = "ID_TICKETS", insertable = false, updatable = false)
     public List<Long> getIdTickets(){
         return this.idTickets;
     }

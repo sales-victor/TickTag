@@ -2,10 +2,14 @@ package br.com.ticktag.util;
 
 
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -64,5 +68,28 @@ public class UtilApp implements Serializable {
 
 		return mensagemFinal.toString();
 
+	}
+
+	static public String generateHashCode(String user, String event){
+		String input = user + event + UUID.randomUUID();
+
+		try {
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+			byte[] encodedHash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+			StringBuilder hexString = new StringBuilder();
+
+			for (byte b : encodedHash) {
+				String hex = Integer.toHexString(0xff & b);
+				if (hex.length() == 1) {
+					hexString.append('0');
+				}
+				hexString.append(hex);
+			}
+
+			return hexString.toString();
+		} catch (NoSuchAlgorithmException e) {
+
+			throw new RuntimeException("Erro ao gerar hash: " + e.getMessage());
+		}
 	}
 }

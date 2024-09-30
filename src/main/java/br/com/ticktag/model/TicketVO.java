@@ -9,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import java.util.UUID;
@@ -76,30 +75,7 @@ public class TicketVO implements Serializable {
         return this.hashCode;
     }
 
-    @PrePersist
-    public String setHashCode() {
-        String usuario = this.getUsuario().getNome();
-        String evento = this.getEvento().getNomeEvento();
-        String input = usuario + evento + UUID.randomUUID().toString();
-
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] encodedHash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
-            StringBuilder hexString = new StringBuilder();
-
-            for (byte b : encodedHash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
-            }
-
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-
-            throw new RuntimeException("Erro ao gerar hash: " + e.getMessage());
-
-        }
+    public void setHashCode(String hashCode) {
+        this.hashCode = hashCode;
     }
 }

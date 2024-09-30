@@ -13,6 +13,7 @@ import br.com.ticktag.util.ApiResponse;
 import br.com.ticktag.model.EventoVO;
 import br.com.ticktag.model.TicketVO;
 import br.com.ticktag.model.UsuarioVO;
+import br.com.ticktag.util.UtilApp;
 
 @Service
 public class TicketService {
@@ -54,6 +55,10 @@ public class TicketService {
 
     public ApiResponse<TicketVO> saveNewTicket(TicketVO ticket) {
         try {
+            String user = ticket.getUsuario().getNome();
+            String event = ticket.getEvento().getNomeEvento();
+            String hash = UtilApp.generateHashCode(user, event);
+
             TicketVO newTicket = saveTicket(ticket);
 
             UsuarioVO usuario = ticket.getUsuario();
@@ -64,6 +69,7 @@ public class TicketService {
             evento.setIdTicket(newTicket.getId());
             newTicket.setEvento(eventoRepository.save(evento));
 
+            newTicket.setHashCode(hash);
             return ApiResponse.success(newTicket);
         } catch (Exception e) {
             return ApiResponse.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
