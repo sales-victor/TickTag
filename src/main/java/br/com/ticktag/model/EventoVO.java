@@ -21,17 +21,16 @@ public class EventoVO implements Serializable {
 	private String statusEvento;
 	private Date dataEvento;
 	private EnderecoVO enderecoVO;
-	private Set<TipoTicketVO> tickets = new HashSet<>();;
-	private List<Long> idTickets = new ArrayList<>();
+	private Set<TipoTicketVO> tickets = new HashSet<>();
 	private Long lotacaoMaxima;
 	private Long classificacaoIdade;
-	
+
 	@Id
 	@SequenceGenerator(name="TB_EVENTO_SEQ", sequenceName="TB_EVENTO_SEQ", allocationSize=1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="TB_EVENTO_SEQ")
 	@Column(name="ID_EVENTO")
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 	public void setId(Long id) {
 		this.id = id;
@@ -94,19 +93,6 @@ public class EventoVO implements Serializable {
 	public void setTickets(Set<TipoTicketVO> tickets) {
 		this.tickets = tickets;
 	}
-
-	@JoinColumn(name = "ID_TICKETS", referencedColumnName = "ID_TICKETS", insertable = false, updatable = false)
-	public List<Long> getIdTickets(){
-		return this.idTickets;
-	}
-
-	public void setIdTickets(List<Long> idTickets){
-		this.idTickets = idTickets;
-	}
-
-	public void setIdTicket(Long idTicket){
-		this.idTickets.add(idTicket);
-	}	
 		
 	public EventoVO() {
 		super();

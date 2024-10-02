@@ -10,6 +10,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface UsuarioRepository extends JpaRepository<UsuarioVO, Long> {
     UsuarioVO findByEmail(String email);
 
-    List<TicketVO> findByIdTicket(Long idTicket);
 }
 

@@ -43,11 +43,7 @@ public class TicketService {
     public ApiResponse<TicketVO> findById(Long idTicket) {
         try {
             Optional<TicketVO> ticket = ticketRepository.findById(idTicket);
-            if (ticket.isPresent()) {
-                return ApiResponse.success(ticket.get());
-            } else {
-                return ApiResponse.error("Ticket não encontrado", HttpStatus.NO_CONTENT);
-            }
+            return ticket.map(ApiResponse::success).orElseGet(() -> ApiResponse.error("Ticket não encontrado", HttpStatus.NO_CONTENT));
         } catch (Exception e) {
             return ApiResponse.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -66,7 +62,6 @@ public class TicketService {
             newTicket.setUsuario(usuarioRepository.save(usuario));
 
             EventoVO evento = ticket.getEvento();
-            evento.setIdTicket(newTicket.getId());
             newTicket.setEvento(eventoRepository.save(evento));
 
             newTicket.setHashCode(hash);

@@ -8,6 +8,4 @@ import br.com.ticktag.model.EventoVO;
 
 public interface EventoRepository extends JpaRepository<EventoVO, Long> {
 
-    List<TicketVO> findByIdTicket(Long idTicket);
-
 }

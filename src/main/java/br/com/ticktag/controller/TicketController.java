@@ -22,7 +22,7 @@ public class TicketController {
     @Autowired
     private TicketService ticketService;
 
-    @GetMapping()
+    @GetMapping
     public ApiResponse<List<TicketVO>> findAll() {
         return ticketService.findAll();
     }
