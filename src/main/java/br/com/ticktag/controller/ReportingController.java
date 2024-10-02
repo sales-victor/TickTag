@@ -42,9 +42,4 @@ public class ReportingController {
         return reportingService.getClassificacaoEtariaEventos();
     }
 
-    @PostMapping("/create-event")
-    public String createEvent(@RequestBody EventoVO event) {
-        reportingService.saveEvent(event);
-        return "Event created successfully!";
-    }
 }
