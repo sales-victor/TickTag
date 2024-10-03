@@ -22,6 +22,9 @@ public class EventoVO implements Serializable {
 	private Date dataEvento;
 	private EnderecoVO enderecoVO;
 	private Set<TipoTicketVO> tickets = new HashSet<>();
+
+	private Set<TicketVO> ticketsEvento = new HashSet<>();
+
 	private Long lotacaoMaxima;
 	private Long classificacaoIdade;
 

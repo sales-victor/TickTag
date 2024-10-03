@@ -1,8 +1,6 @@
 package br.com.ticktag.model;
 
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
-import java.security.NoSuchAlgorithmException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,8 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import java.util.UUID;
-import java.security.MessageDigest;
 
 @Entity
 @Table(name = "TB_TICKET")
@@ -20,21 +16,26 @@ public class TicketVO implements Serializable {
 
     private Long id;
     private UsuarioVO usuarioVO;
-    private EventoVO eventoVo;
+    private EventoVO eventoVO;
+    private TipoTicketVO tipoTicketVO;
     private String hashCode;
+
+    public TicketVO(){
+        super();
+    }
 
     public TicketVO(Long id, UsuarioVO usuario, EventoVO evento, String hashCode) {
         super();
         this.id = id;
         this.usuarioVO = usuario;
-        this.eventoVo = evento;
+        this.eventoVO = evento;
         this.hashCode = hashCode;
     }
 
     public TicketVO(UsuarioVO usuario, EventoVO evento, String hashCode) {
         super();
         this.usuarioVO = usuario;
-        this.eventoVo = evento;
+        this.eventoVO = evento;
         this.hashCode = hashCode;
     }
 
@@ -63,11 +64,11 @@ public class TicketVO implements Serializable {
     @Column(name = "EVENTO")
     @JoinColumn(name = "ID_TICKET", referencedColumnName = "ID_TICKET", insertable = false, updatable = false)
     public EventoVO getEvento() {
-        return this.eventoVo;
+        return this.eventoVO;
     }
 
     public void setEvento(EventoVO evento) {
-        this.eventoVo = evento;
+        this.eventoVO = evento;
     }
 
     @Column(name = "HASH_CODE")
@@ -78,4 +79,5 @@ public class TicketVO implements Serializable {
     public void setHashCode(String hashCode) {
         this.hashCode = hashCode;
     }
+
 }

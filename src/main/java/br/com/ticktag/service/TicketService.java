@@ -1,7 +1,11 @@
 package br.com.ticktag.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
+import br.com.ticktag.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -10,9 +14,6 @@ import br.com.ticktag.repository.EventoRepository;
 import br.com.ticktag.repository.TicketRepository;
 import br.com.ticktag.repository.UsuarioRepository;
 import br.com.ticktag.util.ApiResponse;
-import br.com.ticktag.model.EventoVO;
-import br.com.ticktag.model.TicketVO;
-import br.com.ticktag.model.UsuarioVO;
 import br.com.ticktag.util.UtilApp;
 
 @Service
@@ -55,24 +56,19 @@ public class TicketService {
             String event = ticket.getEvento().getNomeEvento();
             String hash = UtilApp.generateHashCode(user, event);
 
-            TicketVO newTicket = saveTicket(ticket);
-
             UsuarioVO usuario = ticket.getUsuario();
-            usuario.setIdTicket(newTicket.getId());
-            newTicket.setUsuario(usuarioRepository.save(usuario));
+            usuario.setIdTicket(usuario.getId());
+            ticket.setUsuario(usuarioRepository.save(usuario));
 
-            EventoVO evento = ticket.getEvento();
-            newTicket.setEvento(eventoRepository.save(evento));
-
-            newTicket.setHashCode(hash);
-            return ApiResponse.success(newTicket);
+            ticket.setHashCode(hash);
+            return ApiResponse.success(ticket);
         } catch (Exception e) {
             return ApiResponse.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     private TicketVO saveTicket(TicketVO ticket) {
-        TicketVO newTicket = new TicketVO(ticket.getUsuario(), ticket.getEvento(),
+        TicketVO newTicket = new TicketVO(ticket.getId(), ticket.getUsuario(), ticket.getEvento(),
                 ticket.getHashCode());
         return ticketRepository.save(newTicket);
     }
