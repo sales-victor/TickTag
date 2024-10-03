@@ -6,6 +6,7 @@ import br.com.ticktag.model.UsuarioVO;
 import br.com.ticktag.repository.UsuarioRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -28,5 +29,9 @@ public class UsuarioService {
 
     public UsuarioVO buscarPorEmail(String email) {
         return usuarioRepository.findByEmail(email);
+    }
+
+    public Optional<UsuarioVO> buscarPorId(Long id) {
+        return usuarioRepository.findById(id);
     }
 }
