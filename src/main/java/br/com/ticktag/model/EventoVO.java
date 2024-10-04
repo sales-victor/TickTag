@@ -104,6 +104,10 @@ public class EventoVO implements Serializable {
 	public void setTicketsEvento(Set<TicketVO> ticketsEvento){
 		this.ticketsEvento = ticketsEvento;
 	}
+
+	public void setTicketsEvento(TicketVO ticketEvento){
+		this.ticketsEvento.add(ticketEvento);
+	}
 		
 	public EventoVO() {
 		super();

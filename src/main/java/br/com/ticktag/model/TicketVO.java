@@ -21,16 +21,18 @@ public class TicketVO implements Serializable {
     @JoinColumn(name = "ID_TIPO_TICKET")
     private TipoTicketVO tipoTicketVO;
 
+    @Column(name = "HASH_CODE")
     private String hashCode;
 
     public TicketVO() {
         super();
     }
 
-    public TicketVO(UsuarioVO usuario, EventoVO evento, String hashCode) {
+    public TicketVO(UsuarioVO usuario, EventoVO evento, TipoTicketVO tipoTicket, String hashCode) {
         super();
         this.usuarioVO = usuario;
         this.eventoVO = evento;
+        this.tipoTicketVO = tipoTicket;
         this.hashCode = hashCode;
     }
 
@@ -69,7 +71,6 @@ public class TicketVO implements Serializable {
         this.tipoTicketVO = tipoTicket;
     }
 
-    @Column(name = "HASH_CODE")
     public String getHashCode() {
         return this.hashCode;
     }
