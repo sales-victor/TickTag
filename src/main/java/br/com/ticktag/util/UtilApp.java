@@ -70,8 +70,8 @@ public class UtilApp implements Serializable {
 
 	}
 
-	static public String generateHashCode(String user, String event){
-		String input = user + event + UUID.randomUUID();
+	static public String generateHashCode(String user, String event, String ticketType){
+		String input = user + event + ticketType + UUID.randomUUID();
 
 		try {
 			MessageDigest digest = MessageDigest.getInstance("SHA-256");

@@ -2,7 +2,6 @@ package br.com.ticktag.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -24,7 +23,6 @@ public class UsuarioVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private Long idTicket;
     private String nome;
     private LocalDate dataNascimento;
     private String email;
@@ -32,6 +30,14 @@ public class UsuarioVO implements Serializable {
     private String cpf;
     private String password;
     private Set<RoleVO> roles; // Grupos de acesso
+
+    @ManyToMany
+    @JoinTable(
+        name = "TICKETS_USUARIO",
+        joinColumns = @JoinColumn(name = "ID"),
+        inverseJoinColumns = @JoinColumn(name = "ID_TICKETS")
+    )
+    private List<TicketVO> tickets;
 
     @Id
     @SequenceGenerator(name = "TB_USUARIO_SEQ", sequenceName = "TB_USUARIO_SEQ", allocationSize = 1)
@@ -43,16 +49,6 @@ public class UsuarioVO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    @Column(name="ID_TICKETS")
-    @JoinColumn(name = "ID_TICKETS", referencedColumnName = "ID_TICKETS", insertable = false, updatable = false)
-    public Long getIdTicket(){
-        return this.idTicket;
-    }
-
-    public void setIdTicket(Long idTicket){
-        this.idTicket = idTicket;
     }
 
     @Column(name = "NOME", nullable = false)
@@ -111,9 +107,9 @@ public class UsuarioVO implements Serializable {
 
     @ManyToMany
     @JoinTable(
-            name = "TB_USUARIO_ROLE",
-            joinColumns = @JoinColumn(name = "ID_USUARIO"),
-            inverseJoinColumns = @JoinColumn(name = "ID_ROLE")
+        name = "TB_USUARIO_ROLE", 
+        joinColumns = @JoinColumn(name = "ID_USUARIO"), 
+        inverseJoinColumns = @JoinColumn(name = "ID_ROLE")
     )
     public Set<RoleVO> getRoles() {
         return roles;
@@ -122,4 +118,18 @@ public class UsuarioVO implements Serializable {
     public void setRoles(Set<RoleVO> roles) {
         this.roles = roles;
     }
+
+    @JoinColumn(name = "")
+    public List<TicketVO> getTickets() {
+        return this.tickets;
+    }
+
+    public void setTickets(List<TicketVO> tickets) {
+        this.tickets = tickets;
+    }
+
+    public void setTickets(TicketVO ticket) {
+        this.tickets.add(ticket);
+    }
+
 }
