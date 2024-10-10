@@ -10,7 +10,8 @@ public class TicketVO implements Serializable {
     @Id
     private Long id;
 
-    @ManyToMany(mappedBy = "USUARIOS")
+    @ManyToOne
+    @JoinColumn(name = "ID_USUARIO")
     private UsuarioVO usuarioVO;
 
     @ManyToOne

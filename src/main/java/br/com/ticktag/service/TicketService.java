@@ -60,7 +60,7 @@ public class TicketService {
             String hashCode = this.generateHashCode(ticket);
 
             UsuarioVO usuario = ticket.getUsuario();
-            usuario.setTickets(ticket);
+//            usuario.setTickets(ticket);
             ticket.setUsuario(usuarioRepository.save(usuario));
 
             EventoVO evento = ticket.getEvento();
@@ -123,7 +123,7 @@ public class TicketService {
 
     private void updateUserTickets(TicketVO ticket, UsuarioVO user) {
         UsuarioVO oldUser = ticket.getUsuario();
-        List<TicketVO> ticketsOldUser = oldUser.getTickets();
+        Set<TicketVO> ticketsOldUser = oldUser.getTickets();
 
         if (ticketsOldUser.contains(ticket)) {
             ticketsOldUser.remove(ticket);

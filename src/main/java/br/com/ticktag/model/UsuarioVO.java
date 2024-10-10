@@ -2,19 +2,8 @@ package br.com.ticktag.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "TB_USUARIO")
@@ -34,10 +23,10 @@ public class UsuarioVO implements Serializable {
     @ManyToMany
     @JoinTable(
         name = "TICKETS_USUARIO",
-        joinColumns = @JoinColumn(name = "ID"),
+        joinColumns = @JoinColumn(name = "ID_USUARIO"),
         inverseJoinColumns = @JoinColumn(name = "ID_TICKETS")
     )
-    private List<TicketVO> tickets;
+    private Set<TicketVO> tickets;
 
     @Id
     @SequenceGenerator(name = "TB_USUARIO_SEQ", sequenceName = "TB_USUARIO_SEQ", allocationSize = 1)
@@ -119,12 +108,12 @@ public class UsuarioVO implements Serializable {
         this.roles = roles;
     }
 
-    @JoinColumn(name = "")
-    public List<TicketVO> getTickets() {
+    @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO", insertable = false, updatable = false)
+    public Set<TicketVO> getTickets() {
         return this.tickets;
     }
 
-    public void setTickets(List<TicketVO> tickets) {
+    public void setTickets(Set<TicketVO> tickets) {
         this.tickets = tickets;
     }
 

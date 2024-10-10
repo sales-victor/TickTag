@@ -1,21 +1,24 @@
 package br.com.ticktag.model;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "TB_TIPO_TICKET")
 public class TipoTicketVO implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
 	private Long idEvento;
 	private Long lote;
@@ -24,73 +27,94 @@ public class TipoTicketVO implements Serializable {
 	private Double valorMeiaTicket;
 	private String tipoTicket;
 	private String statusTicket;
-	
+	private Set<TicketVO> tickets;
+
 	@Id
-	@SequenceGenerator(name="TB_TIPO_TICKET_SEQ", sequenceName="TB_TIPO_TICKET_SEQ", allocationSize=1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="TB_TIPO_TICKET_SEQ")
+	@SequenceGenerator(name = "TB_TIPO_TICKET_SEQ", sequenceName = "TB_TIPO_TICKET_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_TIPO_TICKET_SEQ")
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	@Column(name="ID_EVENTO")
+
+	@Column(name = "ID_EVENTO")
 	public Long getIdEvento() {
 		return idEvento;
 	}
+
 	public void setIdEvento(Long idEvento) {
 		this.idEvento = idEvento;
 	}
-	
-	@Column(name="LOTE")
+
+	@Column(name = "LOTE")
 	public Long getLote() {
 		return lote;
 	}
+
 	public void setLote(Long lote) {
 		this.lote = lote;
 	}
-	
-	@Column(name="QTD_LOTE")
+
+	@Column(name = "QTD_LOTE")
 	public Long getQtdLote() {
 		return qtdLote;
 	}
+
 	public void setQtdLote(Long qtdLote) {
 		this.qtdLote = qtdLote;
 	}
-	
-	@Column(name="VALOR_TICKET")
+
+	@Column(name = "VALOR_TICKET")
 	public Double getValorTicket() {
 		return valorTicket;
 	}
+
 	public void setValorTicket(Double valorTicket) {
 		this.valorTicket = valorTicket;
 	}
-	
-	@Column(name="VALOR_MEIA_TICKET")
+
+	@Column(name = "VALOR_MEIA_TICKET")
 	public Double getValorMeiaTicket() {
 		return valorMeiaTicket;
 	}
+
 	public void setValorMeiaTicket(Double valorMeiaTicket) {
 		this.valorMeiaTicket = valorMeiaTicket;
 	}
-	
-	@Column(name="TIPO_TICKET")
+
+	@Column(name = "TIPO_TICKET")
 	public String getTipoTicket() {
 		return tipoTicket;
 	}
+
 	public void setTipoTicket(String tipoTicket) {
 		this.tipoTicket = tipoTicket;
 	}
-	
-	@Column(name="STATUS_TICKET")
+
+	@Column(name = "STATUS_TICKET")
 	public String getStatusTicket() {
 		return statusTicket;
 	}
+
 	public void setStatusTicket(String statusTicket) {
 		this.statusTicket = statusTicket;
 	}
-	
-	
+
+	@ManyToOne
+	@JoinColumn(name = "ID_TIPO_TICKET")
+	public void setTickets(Set<TicketVO> tickets) {
+		this.tickets = tickets;
+	}
+
+	public void setTickets(TicketVO ticket) {
+		this.tickets.add(ticket);
+	}
+
+	public Set<TicketVO> getTickets() {
+		return tickets;
+	}
 
 }

@@ -21,7 +21,7 @@ public class EventoVO implements Serializable {
 	private EnderecoVO enderecoVO;
 	private Set<TipoTicketVO> tickets = new HashSet<>();
 
-	@OneToMany(mappedBy = "ID_TICKETS", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany
 	private Set<TicketVO> ticketsEvento = new HashSet<>();
 	private Long lotacaoMaxima;
 	private Long classificacaoIdade;
