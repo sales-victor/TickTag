@@ -57,30 +57,40 @@ public class TicketService {
 
     public ApiResponse<TicketVO> saveNewTicket(TicketVO ticket) {
         try {
+            // Gera o hashCode para o ticket
             String hashCode = this.generateHashCode(ticket);
-
-            UsuarioVO usuario = ticket.getUsuario();
-//            usuario.setTickets(ticket);
-            ticket.setUsuario(usuarioRepository.save(usuario));
-
-            EventoVO evento = ticket.getEvento();
-            evento.setTicketsEvento(ticket);
-            ticket.setEvento(eventoRepository.save(evento));
-
             ticket.setHashCode(hashCode);
 
+            // Obtém o usuário associado ao ticket
+            UsuarioVO usuario = ticket.getUsuarioVO();
+            // Adiciona o ticket ao conjunto de tickets do usuário
+            usuario.getTickets().add(ticket);
+            // Salva o usuário com o novo ticket
+            usuarioRepository.save(usuario);
+
+            // Obtém o evento associado ao ticket
+            EventoVO evento = ticket.getEventoVO();
+            // Adiciona o ticket ao conjunto de tickets do evento
+            evento.getTicketsEvento().add(ticket);
+            // Salva o evento com o novo ticket
+            eventoRepository.save(evento);
+
+            // Salva o ticket com as associações atualizadas
             ticketRepository.save(ticket);
 
+            // Retorna a resposta de sucesso com o ticket salvo
             return ApiResponse.success(ticket);
         } catch (Exception e) {
+            // Em caso de erro, retorna a resposta com o erro e o status HTTP 500
             return ApiResponse.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+
     private String generateHashCode(TicketVO ticket) {
-        String user = ticket.getUsuario().getNome();
-        String event = ticket.getEvento().getNomeEvento();
-        String ticketType = ticket.getTipoTicket().getTipoTicket();
+        String user = ticket.getUsuarioVO().getNome();
+        String event = ticket.getEventoVO().getNomeEvento();
+        String ticketType = ticket.getTipoTicketVO().getTipoTicket();
         String hash = UtilApp.generateHashCode(user, event, ticketType);
         return hash;
     }
@@ -122,15 +132,22 @@ public class TicketService {
     }
 
     private void updateUserTickets(TicketVO ticket, UsuarioVO user) {
-        UsuarioVO oldUser = ticket.getUsuario();
+        UsuarioVO oldUser = ticket.getUsuarioVO();
         Set<TicketVO> ticketsOldUser = oldUser.getTickets();
 
+        // Verifica se o usuário antigo realmente possui o ticket
         if (ticketsOldUser.contains(ticket)) {
+            // Remove o ticket do conjunto de tickets do usuário antigo
             ticketsOldUser.remove(ticket);
             oldUser.setTickets(ticketsOldUser);
-            user.setTickets(ticket);
-            ticket.setUsuario(user);
 
+            // Atualiza a associação do ticket para o novo usuário
+            ticket.setUsuarioVO(user);
+
+            // Adiciona o ticket ao conjunto de tickets do novo usuário
+            user.getTickets().add(ticket);
+
+            // Salva as mudanças no banco de dados
             usuarioRepository.save(oldUser);
             usuarioRepository.save(user);
             ticketRepository.save(ticket);
@@ -141,27 +158,33 @@ public class TicketService {
     }
 
     private void updateEventTickets(TicketVO ticket, EventoVO event) {
-        EventoVO oldEvent = ticket.getEvento();
+        EventoVO oldEvent = ticket.getEventoVO();
         Set<TicketVO> ticketsOldEvent = oldEvent.getTicketsEvento();
 
+        // Verifica se o evento antigo realmente contém o ticket
         if (ticketsOldEvent.contains(ticket)) {
+            // Remove o ticket do conjunto de tickets do evento antigo
             ticketsOldEvent.remove(ticket);
             oldEvent.setTicketsEvento(ticketsOldEvent);
-            event.setTicketsEvento(ticket);
-            ticket.setEvento(event);
 
+            // Atualiza a associação do ticket para o novo evento
+            ticket.setEventoVO(event);
+
+            // Adiciona o ticket ao conjunto de tickets do novo evento
+            event.getTicketsEvento().add(ticket);
+
+            // Salva as mudanças no banco de dados
             eventoRepository.save(oldEvent);
             eventoRepository.save(event);
             ticketRepository.save(ticket);
         } else {
             throw new IllegalArgumentException(
-                    String.format("Event: %s does not have the ticket: %s", oldEvent.getNomeEvento(),
-                            ticket.getHashCode()));
+                    String.format("Event: %s does not have the ticket: %s", oldEvent.getNomeEvento(), ticket.getHashCode()));
         }
     }
 
     private void updateTicketType(TicketVO ticket, TipoTicketVO tipoTicket) {
-        ticket.setTipoTicket(tipoTicket);
+        ticket.setTipoTicketVO(tipoTicket);
         ticketRepository.save(ticket);
     }
 

@@ -5,6 +5,7 @@ import br.com.ticktag.model.UsuarioVO;
 import br.com.ticktag.repository.RoleRepository;
 import br.com.ticktag.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -13,13 +14,16 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/usuarios")
-public class UsuarioRestCtr {
+public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping
     public List<UsuarioVO> listarUsuarios() {
@@ -30,6 +34,7 @@ public class UsuarioRestCtr {
     public UsuarioVO criarUsuario(@RequestBody UsuarioVO usuario) {
         Set<RoleVO> roles = new HashSet<>();
         roles.add(roleRepository.findByNome("ADMIN"));
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 
         usuario.setRoles(roles);
         return usuarioService.salvarUsuario(usuario);
