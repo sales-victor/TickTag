@@ -1,9 +1,11 @@
 package br.com.ticktag.config;
 
 import br.com.ticktag.model.RoleVO;
+import br.com.ticktag.model.TicketVO;
 import br.com.ticktag.model.UsuarioVO;
 import br.com.ticktag.repository.RoleRepository;
 import br.com.ticktag.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +18,17 @@ import java.util.Set;
 @Configuration
 public class DataLoaderConfig {
 
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Bean
-    CommandLineRunner loadRolesAndUsers(RoleRepository roleRepository, UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+    CommandLineRunner loadRolesAndUsers() {
         return args -> {
             // Verifica se as roles já existem no banco de dados
             if (roleRepository.count() == 0) {
@@ -60,8 +71,11 @@ public class DataLoaderConfig {
                 Set<RoleVO> rolesComercial = new HashSet<>();
                 rolesComercial.add(comercialRole);
 
+                Set<TicketVO> tickets = new HashSet<>();
+
                 // Criar usuário com role de ADMIN
                 UsuarioVO adminUser = new UsuarioVO();
+                adminUser.setTickets(tickets);
                 adminUser.setNome("Administrador");
                 adminUser.setEmail("admin@ticktag.com");
                 adminUser.setPassword(passwordEncoder.encode("admin123")); // Senha criptografada
@@ -72,6 +86,7 @@ public class DataLoaderConfig {
 
                 // Criar usuário com role de ANALISTA
                 UsuarioVO analistaUser = new UsuarioVO();
+                analistaUser.setTickets(tickets);
                 analistaUser.setNome("Analista");
                 analistaUser.setEmail("analista@ticktag.com");
                 analistaUser.setPassword(passwordEncoder.encode("analista123")); // Senha criptografada
@@ -82,6 +97,7 @@ public class DataLoaderConfig {
 
                 // Criar usuário com role de COMERCIAL
                 UsuarioVO comercialUser = new UsuarioVO();
+                comercialUser.setTickets(tickets);
                 comercialUser.setNome("Comercial");
                 comercialUser.setEmail("comercial@ticktag.com");
                 comercialUser.setPassword(passwordEncoder.encode("comercial123")); // Senha criptografada

@@ -6,8 +6,12 @@ import br.com.ticktag.repository.RoleRepository;
 import br.com.ticktag.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+<<<<<<< HEAD:src/main/java/br/com/ticktag/controller/UsuarioRestCtr.java
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+=======
+import org.springframework.security.crypto.password.PasswordEncoder;
+>>>>>>> ticket-component:src/main/java/br/com/ticktag/controller/UsuarioController.java
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -17,13 +21,16 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/usuarios")
-public class UsuarioRestCtr {
+public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping
     public ResponseEntity<List<UsuarioVO>> listarUsuarios() {
@@ -35,6 +42,7 @@ public class UsuarioRestCtr {
     }
 
     @PostMapping
+<<<<<<< HEAD:src/main/java/br/com/ticktag/controller/UsuarioRestCtr.java
     public ResponseEntity<UsuarioVO> criarUsuario(@Valid @RequestBody UsuarioVO usuario) {
         // Validações de dados obrigatórios
         if (usuario.getEmail() == null || usuario.getEmail().isEmpty()) {
@@ -43,6 +51,12 @@ public class UsuarioRestCtr {
         if (usuario.getPassword() == null || usuario.getPassword().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
+=======
+    public UsuarioVO criarUsuario(@RequestBody UsuarioVO usuario) {
+        Set<RoleVO> roles = new HashSet<>();
+        roles.add(roleRepository.findByNome("ADMIN"));
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+>>>>>>> ticket-component:src/main/java/br/com/ticktag/controller/UsuarioController.java
 
         // Atribuir uma role padrão (ADMIN por exemplo)
         Set<RoleVO> roles = new HashSet<>();

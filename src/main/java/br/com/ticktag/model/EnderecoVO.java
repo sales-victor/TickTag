@@ -1,115 +1,52 @@
 package br.com.ticktag.model;
 
-import java.io.Serializable;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "TB_ENDERECO")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class EnderecoVO implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
-	
-	private Long id;
-	private Long idEvento;
-	private String nomeLogradouro;
-	private String tipoLogradouro;
-	private Long numero;
-	private String complemento;
-	private String bairro;
-	private String cidade;
-	private String uf;
-	private String nomeEspaco;
-	
-	@Id
-	@SequenceGenerator(name="TB_ENDERECO_SEQ", sequenceName="TB_ENDERECO_SEQ", allocationSize=1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="TB_ENDERECO_SEQ")
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	@Column(name="ID_EVENTO")
-	public Long getIdEvento() {
-		return idEvento;
-	}
-	public void setIdEvento(Long idEvento) {
-		this.idEvento = idEvento;
-	}
-	
-	@Column(name="NOME_LOGRADOURO")
-	public String getNomeLogradouro() {
-		return nomeLogradouro;
-	}
-	public void setNomeLogradouro(String nomeLogradouro) {
-		this.nomeLogradouro = nomeLogradouro;
-	}
-	
-	@Column(name="TIPO_LOGRADOURO")
-	public String getTipoLogradouro() {
-		return tipoLogradouro;
-	}
-	public void setTipoLogradouro(String tipoLogradouro) {
-		this.tipoLogradouro = tipoLogradouro;
-	}
-	
-	@Column(name="NUMERO")
-	public Long getNumero() {
-		return numero;
-	}
-	public void setNumero(Long numero) {
-		this.numero = numero;
-	}
-	
-	@Column(name="COMPLEMENTO")
-	public String getComplemento() {
-		return complemento;
-	}
-	public void setComplemento(String complemento) {
-		this.complemento = complemento;
-	}
-	
-	@Column(name="BAIRRO")
-	public String getBairro() {
-		return bairro;
-	}
-	public void setBairro(String bairro) {
-		this.bairro = bairro;
-	}
-	
-	@Column(name="CIDADE")
-	public String getCidade() {
-		return cidade;
-	}
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
-	}
-	
-	@Column(name="UF")
-	public String getUf() {
-		return uf;
-	}
-	public void setUf(String uf) {
-		this.uf = uf;
-	}
 
-	
-	@Column(name="NOME_ESPACO")
-	public String getNomeEspaco() {
-		return nomeEspaco;
-	}
-	public void setNomeEspaco(String nomeEspaco) {
-		this.nomeEspaco = nomeEspaco;
-	}
-	
-	
+    private static final long serialVersionUID = 1L;
 
+    @Id
+    @SequenceGenerator(name = "TB_ENDERECO_SEQ", sequenceName = "TB_ENDERECO_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_ENDERECO_SEQ")
+    private Long id;
+
+    @Column(name = "ID_EVENTO")
+    private Long idEvento;
+
+    @Column(name = "NOME_LOGRADOURO")
+    private String nomeLogradouro;
+
+    @Column(name = "TIPO_LOGRADOURO")
+    private String tipoLogradouro;
+
+    @Column(name = "NUMERO")
+    private Long numero;
+
+    @Column(name = "COMPLEMENTO")
+    private String complemento;
+
+    @Column(name = "BAIRRO")
+    private String bairro;
+
+    @Column(name = "CIDADE")
+    private String cidade;
+
+    @Column(name = "UF")
+    private String uf;
+
+    @Column(name = "NOME_ESPACO")
+    private String nomeEspaco;
 }
