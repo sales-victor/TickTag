@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: ${POSTGRES_DB_URL:jdbc:postgresql://localhost:5433/ticktag}
+    driver-class-name: org.postgresql.Driver
+    username: ${POSTGRES_DB_USERNAME:admin_ticktag}
+    password: ${POSTGRES_DB_PASSWORD:admin}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect

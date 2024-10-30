@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_DB_URL:localhost:3306}/ticktag?useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${MYSQL_DB_USERNAME:root}
+    password: ${MYSQL_DB_PASSWORD:root}
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect

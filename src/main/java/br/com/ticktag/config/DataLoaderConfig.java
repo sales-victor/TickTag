@@ -45,9 +45,9 @@ public class DataLoaderConfig {
                 facade.roleRepository.save(analista);
                 facade.roleRepository.save(comercial);
 
-                System.out.println("Roles inseridas no banco de dados.");
+                log.info("Roles inseridas no banco de dados.");
             } else {
-                System.out.println("Roles já existem no banco de dados.");
+                log.info("Roles já existem no banco de dados.");
             }
 
             // Verifica se o usuário padrão já existe
@@ -102,9 +102,9 @@ public class DataLoaderConfig {
                 comercialUser.setRoles(rolesComercial); // Associa a role de COMERCIAL
                 facade.usuarioRepository.save(comercialUser);
 
-                System.out.println("Usuários padrão criados com sucesso.");
+                log.info("Usuários padrão criados com sucesso.");
             } else {
-                System.out.println("Usuários já existem no banco de dados.");
+                log.info("Usuários já existem no banco de dados.");
             }
         };
     }
