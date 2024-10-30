@@ -1,55 +1,50 @@
 package br.com.ticktag.controller;
 
+import br.com.ticktag.domain.EventoVO;
+import br.com.ticktag.domain.TicketVO;
+import br.com.ticktag.domain.TipoTicketVO;
+import br.com.ticktag.domain.UsuarioVO;
+import br.com.ticktag.service.ServiceFacade;
+import br.com.ticktag.util.ApiResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import br.com.ticktag.model.TicketVO;
-import br.com.ticktag.model.UsuarioVO;
-import br.com.ticktag.model.EventoVO;
-import br.com.ticktag.model.TipoTicketVO;
-import br.com.ticktag.service.TicketService;
-import br.com.ticktag.util.ApiResponse;
-
+@Slf4j
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/ticket")
 public class TicketController {
-    @Autowired
-    private TicketService ticketService;
+
+    private final ServiceFacade facade;
 
     @GetMapping
     public ApiResponse<List<TicketVO>> findAll() {
-        return ticketService.findAll();
+        return facade.ticketService.findAll();
     }
 
     @GetMapping("id/{idTicket}")
     public ApiResponse<TicketVO> findById(@PathVariable Long idTicket) throws Exception {
-        return ticketService.findById(idTicket);
+        return facade.ticketService.findById(idTicket);
     }
 
     @PostMapping
     public ApiResponse<TicketVO> save(@RequestBody TicketVO ticket) {
-        return ticketService.saveNewTicket(ticket);
+        return facade.ticketService.saveNewTicket(ticket);
     }
 
     @PutMapping
     public ApiResponse<TicketVO> update(@RequestBody Long id, Optional<UsuarioVO> usuario,
-            Optional<EventoVO> evento, Optional<TipoTicketVO> tipoTicket) throws Exception {
-        return ticketService.updateTicket(id, usuario, evento, tipoTicket);
+                                        Optional<EventoVO> evento, Optional<TipoTicketVO> tipoTicket) throws Exception {
+        return facade.ticketService.updateTicket(id, usuario, evento, tipoTicket);
     }
 
     @DeleteMapping("/{idTicket}")
     public ApiResponse<String> delelteById(@PathVariable Long idTicket) throws Exception {
-        return ticketService.deletById(idTicket);
+        return facade.ticketService.deletById(idTicket);
     }
 
 }

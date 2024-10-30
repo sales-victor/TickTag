@@ -1,4 +1,4 @@
-package br.com.ticktag.model;
+package br.com.ticktag.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

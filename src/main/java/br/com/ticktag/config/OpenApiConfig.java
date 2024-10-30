@@ -1,4 +1,4 @@
-package br.com.ticktag.util;
+package br.com.ticktag.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

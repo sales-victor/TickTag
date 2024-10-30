@@ -1,28 +1,22 @@
 package br.com.ticktag.util;
 
+import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import org.springframework.data.domain.ExampleMatcher;
 
+@UtilityClass
 public class ExampleMatcherUtil {
-	
-	private static ExampleMatcher caseInsensitiveAndContainedExampleMatcher = ExampleMatcher.matching().withIgnoreCase().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
-	private static ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matching().withIgnoreCase();
-	private static ExampleMatcher containedExampleMatcher = ExampleMatcher.matching().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
-//	ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths("id") .withIgnoreCase(); 
-	
-	private ExampleMatcherUtil() {}
 
-	public static ExampleMatcher getCaseInsensitiveAndContainedExampleMatcher() {
-		return caseInsensitiveAndContainedExampleMatcher;
-	}
+    @Getter
+    private final ExampleMatcher caseInsensitiveAndContainedExampleMatcher =
+            ExampleMatcher.matching().withIgnoreCase().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 
-	public static ExampleMatcher getCaseInsensitiveExampleMatcher() {
-		return caseInsensitiveExampleMatcher;
-	}
+    @Getter
+    private final ExampleMatcher caseInsensitiveExampleMatcher =
+            ExampleMatcher.matching().withIgnoreCase();
 
-
-	public static ExampleMatcher getContainedExampleMatcher() {
-		return containedExampleMatcher;
-	}
-
-
+    @Getter
+    private final ExampleMatcher containedExampleMatcher =
+            ExampleMatcher.matching().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+//	ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths("id") .withIgnoreCase();
 }

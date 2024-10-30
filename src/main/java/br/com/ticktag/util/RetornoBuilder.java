@@ -1,10 +1,12 @@
 package br.com.ticktag.util;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
+@RequiredArgsConstructor
 public class RetornoBuilder implements RetornoBuilderInterface {
 
-	private Retorno instancia;
+	private final Retorno instancia;
 
 	public RetornoBuilder() {
 		instancia = new Retorno();

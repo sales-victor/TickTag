@@ -3,7 +3,7 @@ package br.com.ticktag.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.stereotype.Component;
+import lombok.experimental.UtilityClass;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Date;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-@Component
+@UtilityClass
 public class JwtTokenUtil {
 
     private String SECRET_KEY = "TickTag2024PucMinasSecureExtraBits4522244125151";

@@ -1,45 +1,47 @@
 package br.com.ticktag.controller;
 
-import br.com.ticktag.model.EventoVO;
-import br.com.ticktag.service.ReportingService;
-import org.springframework.web.bind.annotation.*;
+import br.com.ticktag.service.ServiceFacade;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/reports")
 public class ReportingController {
 
-    private final ReportingService reportingService;
-
-    public ReportingController(ReportingService reportingService) {
-        this.reportingService = reportingService;
-    }
+    private final ServiceFacade facade;
 
     @GetMapping("/event-capacity-utilization")
     public List<Map<String, Object>> getUtilizacaoCapacidadeEvento() {
-        return reportingService.getUtilizacaoCapacidadeEvento();
+        return facade.reportingService.getUtilizacaoCapacidadeEvento();
     }
 
     @GetMapping("/top-events-by-capacity")
     public List<Map<String, Object>> getTopEventosPorCapacidade(@RequestParam("limit") int limit) {
-        return reportingService.getTopEventosPorCapacidade(limit);
+        return facade.reportingService.getTopEventosPorCapacidade(limit);
     }
 
     @GetMapping("/event-distribution-by-date")
     public Map<String, Long> getDistribuicaoEventosPorData() {
-        return reportingService.getDistribuicaoEventosPorData();
+        return facade.reportingService.getDistribuicaoEventosPorData();
     }
 
     @GetMapping("/average-event-capacity")
     public Map<String, Object> getCapacidadeMediaEvento() {
-        return reportingService.getCapacidadeMediaEvento();
+        return facade.reportingService.getCapacidadeMediaEvento();
     }
 
     @GetMapping("/event-age-classification-breakdown")
     public Map<Long, Long> getClassificacaoEtariaEventos() {
-        return reportingService.getClassificacaoEtariaEventos();
+        return facade.reportingService.getClassificacaoEtariaEventos();
     }
 
 }

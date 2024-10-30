@@ -1,11 +1,11 @@
 package br.com.ticktag.config;
 
-import br.com.ticktag.model.RoleVO;
-import br.com.ticktag.model.TicketVO;
-import br.com.ticktag.model.UsuarioVO;
-import br.com.ticktag.repository.RoleRepository;
-import br.com.ticktag.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.ticktag.domain.RoleVO;
+import br.com.ticktag.domain.TicketVO;
+import br.com.ticktag.domain.UsuarioVO;
+import br.com.ticktag.repository.RepositoryFacade;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,23 +15,19 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+@Slf4j
+@RequiredArgsConstructor
 @Configuration
 public class DataLoaderConfig {
 
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final RepositoryFacade facade;
+    private final PasswordEncoder passwordEncoder;
 
     @Bean
     CommandLineRunner loadRolesAndUsers() {
         return args -> {
             // Verifica se as roles já existem no banco de dados
-            if (roleRepository.count() == 0) {
+            if (facade.roleRepository.count() == 0) {
                 // Criar as roles
                 RoleVO admin = new RoleVO();
                 admin.setId(1L);
@@ -45,9 +41,9 @@ public class DataLoaderConfig {
                 comercial.setId(3L);
                 comercial.setNome("COMERCIAL");
 
-                roleRepository.save(admin);
-                roleRepository.save(analista);
-                roleRepository.save(comercial);
+                facade.roleRepository.save(admin);
+                facade.roleRepository.save(analista);
+                facade.roleRepository.save(comercial);
 
                 System.out.println("Roles inseridas no banco de dados.");
             } else {
@@ -55,11 +51,11 @@ public class DataLoaderConfig {
             }
 
             // Verifica se o usuário padrão já existe
-            if (usuarioRepository.count() == 0) {
+            if (facade.usuarioRepository.count() == 0) {
                 // Buscar as roles criadas
-                RoleVO adminRole = roleRepository.findByNome("ADMIN");
-                RoleVO analistaRole = roleRepository.findByNome("ANALISTA");
-                RoleVO comercialRole = roleRepository.findByNome("COMERCIAL");
+                RoleVO adminRole = facade.roleRepository.findByNome("ADMIN");
+                RoleVO analistaRole = facade.roleRepository.findByNome("ANALISTA");
+                RoleVO comercialRole = facade.roleRepository.findByNome("COMERCIAL");
 
                 // Criação do conjunto de roles para o usuário padrão
                 Set<RoleVO> rolesAdmin = new HashSet<>();
@@ -82,7 +78,7 @@ public class DataLoaderConfig {
                 adminUser.setCpf("00000000000");
                 adminUser.setDataNascimento(LocalDate.of(1980, 1, 1)); // Data de nascimento padrão
                 adminUser.setRoles(rolesAdmin); // Associa a role de ADMIN
-                usuarioRepository.save(adminUser);
+                facade.usuarioRepository.save(adminUser);
 
                 // Criar usuário com role de ANALISTA
                 UsuarioVO analistaUser = new UsuarioVO();
@@ -93,7 +89,7 @@ public class DataLoaderConfig {
                 analistaUser.setCpf("11111111111");
                 analistaUser.setDataNascimento(LocalDate.of(1990, 5, 10)); // Data de nascimento padrão
                 analistaUser.setRoles(rolesAnalista); // Associa a role de ANALISTA
-                usuarioRepository.save(analistaUser);
+                facade.usuarioRepository.save(analistaUser);
 
                 // Criar usuário com role de COMERCIAL
                 UsuarioVO comercialUser = new UsuarioVO();
@@ -104,7 +100,7 @@ public class DataLoaderConfig {
                 comercialUser.setCpf("22222222222");
                 comercialUser.setDataNascimento(LocalDate.of(1995, 7, 15)); // Data de nascimento padrão
                 comercialUser.setRoles(rolesComercial); // Associa a role de COMERCIAL
-                usuarioRepository.save(comercialUser);
+                facade.usuarioRepository.save(comercialUser);
 
                 System.out.println("Usuários padrão criados com sucesso.");
             } else {

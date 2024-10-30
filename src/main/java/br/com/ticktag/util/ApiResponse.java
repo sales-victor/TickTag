@@ -1,20 +1,19 @@
 package br.com.ticktag.util;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ApiResponse<T> {
     private int statusCode;
     private String message;
     private T data;
-
-    // Construtores
-    public ApiResponse() {}
-
-    public ApiResponse(int statusCode, String message, T data) {
-        this.statusCode = statusCode;
-        this.message = message;
-        this.data = data;
-    }
 
     // Métodos de fábrica para facilitar a criação de respostas
     public static <T> ApiResponse<T> success(T data) {
@@ -23,30 +22,5 @@ public class ApiResponse<T> {
 
     public static <T> ApiResponse<T> error(String message, HttpStatus status) {
         return new ApiResponse<>(status.value(), message, null);
-    }
-
-    // Getters e Setters
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
     }
 }

@@ -1,4 +1,4 @@
-package br.com.ticktag.model;
+package br.com.ticktag.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
