@@ -8,6 +8,7 @@ import br.com.ticktag.repository.RepositoryFacade;
 import br.com.ticktag.service.EventoService;
 import br.com.ticktag.util.ApiResponse;
 import br.com.ticktag.util.ExampleMatcherUtil;
+import br.com.ticktag.util.ImagemUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Example;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -148,13 +150,14 @@ class EventoServiceImpl implements EventoService {
                 .collect(Collectors.toSet());
     }
 
-    private EventoVO salvarEvento(EventoVO evento) {
+    private EventoVO salvarEvento(EventoVO evento) throws IOException {
         return facade.eventoRepository.save(
                 EventoVO.builder()
                         .nomeEvento(evento.getNomeEvento())
                         .statusEvento(evento.getStatusEvento())
                         .dataEvento(evento.getDataEvento())
                         .lotacaoMaxima(evento.getLotacaoMaxima())
+                        .capaEvento(ImagemUtils.base64ToBytes(evento.getBaseImagem()))
                         .classificacaoIdade(evento.getClassificacaoIdade())
                         .build());
     }

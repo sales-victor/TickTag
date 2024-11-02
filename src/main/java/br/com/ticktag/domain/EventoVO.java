@@ -54,6 +54,13 @@ public class EventoVO implements Serializable {
 
     @Column(name = "CLASSIFICACAO_IDADE")
     private Long classificacaoIdade;
+    
+    @Lob
+    @Column(name = "CAPA_EVENTO", columnDefinition = "BLOB")
+    private byte[] capaEvento;
+    
+    @Transient
+    private String baseImagem;
 
     @Override
     public int hashCode() {
