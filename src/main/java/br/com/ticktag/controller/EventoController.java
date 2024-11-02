@@ -8,6 +8,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
 
 @Slf4j
@@ -33,10 +38,12 @@ public class EventoController {
         return facade.eventoService.findByParams(filter);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000") // Add your frontend URL
     @PostMapping()
     public ApiResponse<EventoVO> save(@RequestBody EventoVO evento) {
         return facade.eventoService.save(evento);
     }
+
 
     @PutMapping()
     public ApiResponse<EventoVO> update(@RequestBody EventoVO evento) throws Exception {
