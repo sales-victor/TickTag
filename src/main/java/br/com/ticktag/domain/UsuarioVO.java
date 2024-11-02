@@ -1,5 +1,6 @@
 package br.com.ticktag.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -52,6 +53,7 @@ public class UsuarioVO implements Serializable {
             joinColumns = @JoinColumn(name = "ID_USUARIO"),
             inverseJoinColumns = @JoinColumn(name = "ID_ROLE")
     )
+    @JsonIgnore
     private Set<RoleVO> roles; // Grupos de acesso
 
     @ManyToMany
@@ -60,5 +62,6 @@ public class UsuarioVO implements Serializable {
             joinColumns = @JoinColumn(name = "ID_USUARIO"),
             inverseJoinColumns = @JoinColumn(name = "ID_TICKETS")
     )
+    @JsonIgnore
     private Set<TicketVO> tickets;
 }
