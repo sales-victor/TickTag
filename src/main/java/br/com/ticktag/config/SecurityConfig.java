@@ -31,13 +31,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Value("${url.front.URL_FRONT}")
+    @Value("${url.front}")
     private String urlFront;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final ServiceFacade facade;
 
     @Bean
-    @Profile("h2")
+    @Profile("mem")
     public SecurityFilterChain securityFilterChainNoAuth(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
@@ -51,7 +51,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    @Profile("!h2")
+    @Profile("!mem")
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Adiciona suporte CORS aqui
