@@ -37,7 +37,7 @@ public class SecurityConfig {
     private final ServiceFacade facade;
 
     @Bean
-    @Profile("mem")
+    @Profile("h2")
     public SecurityFilterChain securityFilterChainNoAuth(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
@@ -51,7 +51,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    @Profile("!mem")
+    @Profile("!h2")
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Adiciona suporte CORS aqui
