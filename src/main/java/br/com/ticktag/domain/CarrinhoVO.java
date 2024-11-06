@@ -20,9 +20,9 @@ public class CarrinhoVO implements Serializable{
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "TB_CARRINHO_SEQ", sequenceName = "TB_CARRINHO", allocationSize = 1)
+    @SequenceGenerator(name = "TB_CARRINHO_SEQ", sequenceName = "TB_CARRINHO_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_CARRINHO_SEQ")
-    @Column(name = "ID_CARRINHO")
+    @Column(name = "ID")
     private Long id;
 
     @OneToOne
