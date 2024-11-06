@@ -18,7 +18,7 @@ public class ItemCarrinhoVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "TB_ITEM_CARRINHO_SEQ", sequenceName = "TB_ITEM_CARRINHO", allocationSize = 1)
+    @SequenceGenerator(name = "TB_ITEM_CARRINHO_SEQ", sequenceName = "TB_ITEM_CARRINHO_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_ITEM_CARRINHO_SEQ")
     @Column(name = "ID_ITEM_CARRINHO")
     private Long id;

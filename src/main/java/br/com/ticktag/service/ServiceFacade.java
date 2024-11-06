@@ -11,4 +11,6 @@ public class ServiceFacade {
     public final ReportingService reportingService;
     public final TicketService ticketService;
     public final UsuarioService usuarioService;
+    public final CarrinhoService carrinhoService;
+    public final ItemCarrinhoService itemCarrinhoService;
 }
