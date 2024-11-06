@@ -56,7 +56,7 @@ public class EventoVO implements Serializable {
     private Long classificacaoIdade;
     
     @Lob
-    @Column(name = "CAPA_EVENTO", columnDefinition = "BLOB")
+    @Column(name = "CAPA_EVENTO", columnDefinition = "MEDIUMBLOB")
     private byte[] capaEvento;
     
     @Transient
