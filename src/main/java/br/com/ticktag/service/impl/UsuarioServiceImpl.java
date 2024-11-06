@@ -1,5 +1,6 @@
 package br.com.ticktag.service.impl;
 
+import br.com.ticktag.domain.CarrinhoVO;
 import br.com.ticktag.domain.RoleVO;
 import br.com.ticktag.domain.UsuarioVO;
 import br.com.ticktag.repository.RepositoryFacade;
@@ -35,6 +36,12 @@ class UsuarioServiceImpl implements UsuarioService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         usuario.setRoles(roles);
+
+        // Adiciona um novo carrinho para o usuário
+        CarrinhoVO carrinho = CarrinhoVO.builder().usuario(usuario).build();
+        carrinho.setUsuario(usuario);
+        usuario.setCarrinho(carrinho);
+
         // Adicionar lógica de validação de CPF, email, etc.
         return facade.usuarioRepository.save(usuario);
     }
