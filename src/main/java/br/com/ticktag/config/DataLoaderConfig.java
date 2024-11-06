@@ -1,6 +1,5 @@
 package br.com.ticktag.config;
 
-import br.com.ticktag.controller.Carrinho;
 import br.com.ticktag.domain.*;
 import br.com.ticktag.repository.RepositoryFacade;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
