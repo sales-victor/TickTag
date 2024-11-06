@@ -65,6 +65,7 @@ public class UsuarioVO implements Serializable {
     @JsonIgnore
     private Set<TicketVO> tickets;
 
-    @OneToOne(mappedBy = "usuario")
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private CarrinhoVO carrinho;
 }
