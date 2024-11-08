@@ -8,9 +8,13 @@ import org.springframework.stereotype.Service;
 public interface CarrinhoService {
     ApiResponse<CarrinhoVO> findById(Long idCarrinho);
 
+    ApiResponse<CarrinhoVO> findByUser(String email);
+
     ApiResponse<CarrinhoVO> saveNewCart(CarrinhoVO carrinho);
 
     ApiResponse<CarrinhoVO> updateCart(Long id, CarrinhoVO carrinhoVO);
 
-    ApiResponse<String> deleteById(Long idCarrinho);
+    ApiResponse<CarrinhoVO> deleteById(Long idCarrinho);
+
+    ApiResponse<CarrinhoVO> buyCart(Long id, CarrinhoVO carrinho);
 }
