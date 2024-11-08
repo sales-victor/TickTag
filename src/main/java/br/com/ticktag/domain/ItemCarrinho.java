@@ -12,7 +12,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ItemCarrinhoVO implements Serializable {
+public class ItemCarrinho implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -26,15 +26,15 @@ public class ItemCarrinhoVO implements Serializable {
     @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_CARRINHO")
-    private CarrinhoVO carrinho;
+    private Carrinho carrinho;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "EVENTO")
-    private EventoVO evento;
+    private Evento evento;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TIPO_TICKET")
-    private TipoTicketVO tipoTicket;
+    private TipoTicket tipoTicket;
 
     @Column(name = "QUANTIDADE")
     private Long quantidade;

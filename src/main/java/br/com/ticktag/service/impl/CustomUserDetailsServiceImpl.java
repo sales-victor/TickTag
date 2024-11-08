@@ -1,6 +1,6 @@
 package br.com.ticktag.service.impl;
 
-import br.com.ticktag.domain.UsuarioVO;
+import br.com.ticktag.domain.Usuario;
 import br.com.ticktag.repository.RepositoryFacade;
 import br.com.ticktag.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ class CustomUserDetailsServiceImpl implements CustomUserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UsuarioVO usuario = facade.usuarioRepository.findByEmail(email);
+        Usuario usuario = facade.usuarioRepository.findByEmail(email);
         if (usuario == null) {
             throw new UsernameNotFoundException("Usuário não encontrado com o email: " + email);
         }

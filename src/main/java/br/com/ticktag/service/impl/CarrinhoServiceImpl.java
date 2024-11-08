@@ -16,9 +16,9 @@ class CarrinhoServiceImpl implements CarrinhoService {
     private  final RepositoryFacade facade;
 
     @Override
-    public ApiResponse<CarrinhoVO> findById(Long idCarrinho){
+    public ApiResponse<Carrinho> findById(Long idCarrinho){
         try {
-            Optional<CarrinhoVO> carrinho = facade.carrinhoRepository.findById(idCarrinho);
+            Optional<Carrinho> carrinho = facade.carrinhoRepository.findById(idCarrinho);
             if(carrinho.isPresent()){
                 return ApiResponse.success(carrinho.get());
             } else {
@@ -32,10 +32,10 @@ class CarrinhoServiceImpl implements CarrinhoService {
     }
 
     @Override
-    public ApiResponse<CarrinhoVO> findByUser(String email) {
+    public ApiResponse<Carrinho> findByUser(String email) {
         try {
-            UsuarioVO usuario = facade.usuarioRepository.findByEmail(email);
-            CarrinhoVO carrinho = usuario.getCarrinho();
+            Usuario usuario = facade.usuarioRepository.findByEmail(email);
+            Carrinho carrinho = usuario.getCarrinho();
             return ApiResponse.success(carrinho);
         } catch (Exception e){
             return ApiResponse.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -43,10 +43,10 @@ class CarrinhoServiceImpl implements CarrinhoService {
     }
 
     @Override
-    public ApiResponse<CarrinhoVO> saveNewCart(CarrinhoVO carrinhoVO) {
+    public ApiResponse<Carrinho> saveNewCart(Carrinho Carrinho) {
         try {
-            String emailUsuario = carrinhoVO.getUsuario().getEmail();
-            UsuarioVO usuario = facade.usuarioRepository.findByEmail(emailUsuario);
+            String emailUsuario = Carrinho.getUsuario().getEmail();
+            Usuario usuario = facade.usuarioRepository.findByEmail(emailUsuario);
 
 
         } catch (Exception e) {
@@ -56,13 +56,13 @@ class CarrinhoServiceImpl implements CarrinhoService {
     }
 
     @Override
-    public ApiResponse<CarrinhoVO> updateCart(Long id, CarrinhoVO carrinhoVO) {
+    public ApiResponse<Carrinho> updateCart(Long id, Carrinho Carrinho) {
         try {
-            Optional<CarrinhoVO> carrinhoRep = facade.carrinhoRepository.findById(id);
+            Optional<Carrinho> carrinhoRep = facade.carrinhoRepository.findById(id);
 
             if(carrinhoRep.isPresent()) {
-                CarrinhoVO carrinho;
-                carrinho = carrinhoVO;
+                Carrinho carrinho;
+                carrinho = Carrinho;
                 carrinho = facade.carrinhoRepository.save(carrinho);
                 return ApiResponse.success(carrinho);
             } else {
@@ -74,9 +74,9 @@ class CarrinhoServiceImpl implements CarrinhoService {
     }
 
     @Override
-    public ApiResponse<CarrinhoVO> deleteById(Long idCarrinho) {
+    public ApiResponse<Carrinho> deleteById(Long idCarrinho) {
         try {
-            Optional<CarrinhoVO> carrinho = facade.carrinhoRepository.findById(idCarrinho);
+            Optional<Carrinho> carrinho = facade.carrinhoRepository.findById(idCarrinho);
 
             if(carrinho.isPresent()) {
                 facade.carrinhoRepository.deleteById(idCarrinho);
@@ -92,10 +92,10 @@ class CarrinhoServiceImpl implements CarrinhoService {
 
     // TODO: Transform the paid items in Tickets and filter the items according to "Pending" status
     @Override
-    public ApiResponse<CarrinhoVO> buyCart(Long id, CarrinhoVO carrinho){
+    public ApiResponse<Carrinho> buyCart(Long id, Carrinho carrinho){
         try {
             String pago = new String("PAGO");
-            for(ItemCarrinhoVO item : carrinho.getItensCarrinho()){
+            for(ItemCarrinho item : carrinho.getItensCarrinho()){
                 if(item.getStatus().equals(pago)){
                     continue;
                 } else {

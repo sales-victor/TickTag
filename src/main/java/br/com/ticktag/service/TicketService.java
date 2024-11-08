@@ -1,9 +1,9 @@
 package br.com.ticktag.service;
 
-import br.com.ticktag.domain.EventoVO;
-import br.com.ticktag.domain.TicketVO;
-import br.com.ticktag.domain.TipoTicketVO;
-import br.com.ticktag.domain.UsuarioVO;
+import br.com.ticktag.domain.Evento;
+import br.com.ticktag.domain.Ticket;
+import br.com.ticktag.domain.TipoTicket;
+import br.com.ticktag.domain.Usuario;
 import br.com.ticktag.util.ApiResponse;
 import org.springframework.stereotype.Service;
 
@@ -12,15 +12,15 @@ import java.util.Optional;
 
 @Service
 public interface TicketService {
-    ApiResponse<List<TicketVO>> findAll();
+    ApiResponse<List<Ticket>> findAll();
 
-    ApiResponse<TicketVO> findById(Long idTicket);
+    ApiResponse<Ticket> findById(Long idTicket);
 
-    ApiResponse<TicketVO> saveNewTicket(TicketVO ticket);
+    ApiResponse<Ticket> saveNewTicket(Ticket ticket);
 
-    ApiResponse<TicketVO> updateTicket(Long id, Optional<UsuarioVO> usuario, Optional<EventoVO> evento, Optional<TipoTicketVO> tipoTicket);
+    ApiResponse<Ticket> updateTicket(Long id, Optional<Usuario> usuario, Optional<Evento> evento, Optional<TipoTicket> tipoTicket);
 
     ApiResponse<String> deletById(Long idTicket);
 
-    ApiResponse<String> deleteTicket(TicketVO ticket);
+    ApiResponse<String> deleteTicket(Ticket ticket);
 }

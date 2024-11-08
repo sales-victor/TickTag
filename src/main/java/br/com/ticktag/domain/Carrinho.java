@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CarrinhoVO implements Serializable{
+public class Carrinho implements Serializable{
 
     private static final long serialVersionUID = 1L;
 
@@ -27,11 +27,11 @@ public class CarrinhoVO implements Serializable{
     @EqualsAndHashCode.Exclude
     @OneToOne
     @JoinColumn(name = "ID_USUARIO")
-    private UsuarioVO usuario;
+    private Usuario usuario;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JsonManagedReference
     @OneToMany(mappedBy = "carrinho", fetch = FetchType.LAZY)
-    private Set<ItemCarrinhoVO> itensCarrinho = new HashSet<>();
+    private Set<ItemCarrinho> itensCarrinho = new HashSet<>();
 }

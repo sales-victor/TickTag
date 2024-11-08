@@ -1,7 +1,6 @@
 package br.com.ticktag.controller;
 
-import br.com.ticktag.domain.CarrinhoVO;
-import br.com.ticktag.domain.ItemCarrinhoVO;
+import br.com.ticktag.domain.ItemCarrinho;
 import br.com.ticktag.service.ServiceFacade;
 import br.com.ticktag.util.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,27 +17,27 @@ public class ItemCarrinhoController {
     private final ServiceFacade facade;
 
     @GetMapping
-    public ApiResponse<List<ItemCarrinhoVO>> findAll(){
+    public ApiResponse<List<ItemCarrinho>> findAll(){
         return facade.itemCarrinhoService.findAll();
     }
 
     @GetMapping("/{idItemCarrinho}")
-    public ApiResponse<ItemCarrinhoVO> findById(@PathVariable Long idItemCarrinho) throws Exception {
+    public ApiResponse<ItemCarrinho> findById(@PathVariable Long idItemCarrinho) throws Exception {
         return facade.itemCarrinhoService.findById(idItemCarrinho);
     }
 
     @PostMapping
-    public ApiResponse<ItemCarrinhoVO> saveNewItem(@RequestBody ItemCarrinhoVO itemCarrinho) throws Exception {
+    public ApiResponse<ItemCarrinho> saveNewItem(@RequestBody ItemCarrinho itemCarrinho) throws Exception {
         return facade.itemCarrinhoService.saveNewItem(itemCarrinho);
     }
 
     @PutMapping("/{idItemCarrinho}")
-    public ApiResponse<ItemCarrinhoVO> updateItem(@PathVariable Long idItemCarrinho, @RequestBody ItemCarrinhoVO itemCarrinho) throws Exception {
+    public ApiResponse<ItemCarrinho> updateItem(@PathVariable Long idItemCarrinho, @RequestBody ItemCarrinho itemCarrinho) throws Exception {
         return facade.itemCarrinhoService.updateItem(idItemCarrinho, itemCarrinho);
     }
 
     @DeleteMapping("/{idItemCarrinho}")
-    public ApiResponse<ItemCarrinhoVO> deleteItemById(@PathVariable Long idItemCarrinho) throws Exception {
+    public ApiResponse<ItemCarrinho> deleteItemById(@PathVariable Long idItemCarrinho) throws Exception {
         return facade.itemCarrinhoService.deleteItemById(idItemCarrinho);
     }
 

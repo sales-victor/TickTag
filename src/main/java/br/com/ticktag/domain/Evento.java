@@ -16,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class EventoVO implements Serializable {
+public class Evento implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,33 +37,33 @@ public class EventoVO implements Serializable {
 
     @OneToOne
     @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID_EVENTO", insertable = false, updatable = false)
-    private EnderecoVO enderecoVO;
+    private Endereco endereco;
 
     @OneToMany
     @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID_EVENTO", insertable = false, updatable = false)
-    private Set<TipoTicketVO> tickets = new HashSet<>();
+    private Set<TipoTicket> tickets = new HashSet<>();
 
     @OneToMany
     @JsonIgnore
     @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID_EVENTO", insertable = false, updatable = false)
-    private Set<TicketVO> ticketsEvento = new HashSet<>();
+    private Set<Ticket> ticketsEvento = new HashSet<>();
 
     @Column(name = "LOTACAO_MAX")
     private Long lotacaoMaxima;
 
     @Column(name = "CLASSIFICACAO_IDADE")
     private Long classificacaoIdade;
-    
+
     @Lob
     @Column(name = "CAPA_EVENTO", columnDefinition = "MEDIUMBLOB")
     private byte[] capaEvento;
-    
+
     @Transient
     private String baseImagem;
 
     @Override
     public int hashCode() {
-        return Objects.hash(classificacaoIdade, dataEvento, enderecoVO, id, lotacaoMaxima, nomeEvento, statusEvento, tickets);
+        return Objects.hash(classificacaoIdade, dataEvento, endereco, id, lotacaoMaxima, nomeEvento, statusEvento, tickets);
     }
 
     @Override
@@ -72,10 +72,10 @@ public class EventoVO implements Serializable {
             return true;
         if (obj == null || getClass() != obj.getClass())
             return false;
-        EventoVO other = (EventoVO) obj;
+        Evento other = (Evento) obj;
         return Objects.equals(classificacaoIdade, other.classificacaoIdade) &&
                 Objects.equals(dataEvento, other.dataEvento) &&
-                Objects.equals(enderecoVO, other.enderecoVO) &&
+                Objects.equals(endereco, other.endereco) &&
                 Objects.equals(id, other.id) &&
                 Objects.equals(lotacaoMaxima, other.lotacaoMaxima) &&
                 Objects.equals(nomeEvento, other.nomeEvento) &&

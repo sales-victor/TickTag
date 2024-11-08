@@ -27,15 +27,15 @@ public class DataLoaderConfig {
             // Verifica se as roles já existem no banco de dados
             if (facade.roleRepository.count() == 0) {
                 // Criar as roles
-                RoleVO admin = new RoleVO();
+                Role admin = new Role();
                 admin.setId(1L);
                 admin.setNome("ADMIN");
 
-                RoleVO analista = new RoleVO();
+                Role analista = new Role();
                 analista.setId(2L);
                 analista.setNome("ANALISTA");
 
-                RoleVO comercial = new RoleVO();
+                Role comercial = new Role();
                 comercial.setId(3L);
                 comercial.setNome("COMERCIAL");
 
@@ -51,39 +51,35 @@ public class DataLoaderConfig {
             // Verifica se o usuário padrão já existe
             if (facade.usuarioRepository.count() == 0) {
                 // Buscar as roles criadas
-                RoleVO adminRole = facade.roleRepository.findByNome("ADMIN");
-                RoleVO analistaRole = facade.roleRepository.findByNome("ANALISTA");
-                RoleVO comercialRole = facade.roleRepository.findByNome("COMERCIAL");
+                Role adminRole = facade.roleRepository.findByNome("ADMIN");
+                Role analistaRole = facade.roleRepository.findByNome("ANALISTA");
+                Role comercialRole = facade.roleRepository.findByNome("COMERCIAL");
 
                 // Criação do conjunto de roles para o usuário padrão
-                Set<RoleVO> rolesAdmin = new HashSet<>();
+                Set<Role> rolesAdmin = new HashSet<>();
                 rolesAdmin.add(adminRole);
 
-                Set<RoleVO> rolesAnalista = new HashSet<>();
+                Set<Role> rolesAnalista = new HashSet<>();
                 rolesAnalista.add(analistaRole);
 
-                Set<RoleVO> rolesComercial = new HashSet<>();
+                Set<Role> rolesComercial = new HashSet<>();
                 rolesComercial.add(comercialRole);
 
-                Set<TicketVO> tickets = new HashSet<>();
+                Set<Ticket> tickets = new HashSet<>();
 
                 // Criar usuário com role de ADMIN
-                UsuarioVO adminUser = new UsuarioVO();
-                CarrinhoVO carrinhoAdmin = new CarrinhoVO();
-                adminUser.setTickets(tickets);
+                Usuario adminUser = new Usuario();
+                Carrinho carrinhoAdmin = new Carrinho();
                 adminUser.setNome("Administrador");
                 adminUser.setEmail("admin@ticktag.com");
-                adminUser.setPassword(passwordEncoder.encode("admin123")); // Senha criptografada
-                adminUser.setCpf("00000000000");
-                adminUser.setDataNascimento(LocalDate.of(1980, 1, 1)); // Data de nascimento padrão
                 adminUser.setRoles(rolesAdmin); // Associa a role de ADMIN
                 carrinhoAdmin.setUsuario(adminUser);
                 adminUser.setCarrinho(carrinhoAdmin);
                 facade.usuarioRepository.save(adminUser);
 
                 // Criar usuário com role de ANALISTA
-                UsuarioVO analistaUser = new UsuarioVO();
-                CarrinhoVO carrinhoAnalista = new CarrinhoVO();
+                Usuario analistaUser = new Usuario();
+                Carrinho carrinhoAnalista = new Carrinho();
                 analistaUser.setTickets(tickets);
                 analistaUser.setNome("Analista");
                 analistaUser.setEmail("analista@ticktag.com");
@@ -96,8 +92,8 @@ public class DataLoaderConfig {
                 facade.usuarioRepository.save(analistaUser);
 
                 // Criar usuário com role de COMERCIAL
-                UsuarioVO comercialUser = new UsuarioVO();
-                CarrinhoVO carrinhoComercial = new CarrinhoVO();
+                Usuario comercialUser = new Usuario();
+                Carrinho carrinhoComercial = new Carrinho();
                 comercialUser.setTickets(tickets);
                 comercialUser.setNome("Comercial");
                 comercialUser.setEmail("comercial@ticktag.com");

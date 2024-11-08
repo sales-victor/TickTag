@@ -6,15 +6,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface CarrinhoService {
-    ApiResponse<CarrinhoVO> findById(Long idCarrinho);
+    ApiResponse<Carrinho> findById(Long idCarrinho);
 
-    ApiResponse<CarrinhoVO> findByUser(String email);
+    ApiResponse<Carrinho> findByUser(String email);
 
-    ApiResponse<CarrinhoVO> saveNewCart(CarrinhoVO carrinho);
+    ApiResponse<Carrinho> saveNewCart(Carrinho carrinho);
 
-    ApiResponse<CarrinhoVO> updateCart(Long id, CarrinhoVO carrinhoVO);
+    ApiResponse<Carrinho> updateCart(Long id, Carrinho carrinho);
 
-    ApiResponse<CarrinhoVO> deleteById(Long idCarrinho);
+    ApiResponse<Carrinho> deleteById(Long idCarrinho);
 
-    ApiResponse<CarrinhoVO> buyCart(Long id, CarrinhoVO carrinho);
+    ApiResponse<Carrinho> buyCart(Long id, Carrinho carrinho);
 }

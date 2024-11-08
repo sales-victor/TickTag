@@ -1,8 +1,8 @@
 package br.com.ticktag.service.impl;
 
-import br.com.ticktag.domain.CarrinhoVO;
-import br.com.ticktag.domain.ItemCarrinhoVO;
-import br.com.ticktag.domain.UsuarioVO;
+import br.com.ticktag.domain.Carrinho;
+import br.com.ticktag.domain.ItemCarrinho;
+import br.com.ticktag.domain.Usuario;
 import br.com.ticktag.repository.RepositoryFacade;
 import br.com.ticktag.service.ItemCarrinhoService;
 import br.com.ticktag.util.ApiResponse;
@@ -22,9 +22,9 @@ class ItemCarrinhoImpl implements ItemCarrinhoService {
     private  final RepositoryFacade facade;
 
     @Override
-    public ApiResponse<List<ItemCarrinhoVO>> findAll(){
+    public ApiResponse<List<ItemCarrinho>> findAll(){
         try {
-            List<ItemCarrinhoVO> itensCarrinho = facade.itemCarrinhoRepository.findAll();
+            List<ItemCarrinho> itensCarrinho = facade.itemCarrinhoRepository.findAll();
             if(itensCarrinho != null){
                 return ApiResponse.success(itensCarrinho);
             } else {
@@ -37,9 +37,9 @@ class ItemCarrinhoImpl implements ItemCarrinhoService {
 
 
     @Override
-    public ApiResponse<ItemCarrinhoVO> findById(Long idItemCarrinho){
+    public ApiResponse<ItemCarrinho> findById(Long idItemCarrinho){
         try {
-            Optional<ItemCarrinhoVO> itemCarrinho = facade.itemCarrinhoRepository.findById(idItemCarrinho);
+            Optional<ItemCarrinho> itemCarrinho = facade.itemCarrinhoRepository.findById(idItemCarrinho);
             if(itemCarrinho.isPresent()){
                 return ApiResponse.success(itemCarrinho.get());
             } else {
@@ -53,19 +53,19 @@ class ItemCarrinhoImpl implements ItemCarrinhoService {
     }
 
     @Override
-    public ApiResponse<ItemCarrinhoVO> saveNewItem(ItemCarrinhoVO itemCarrinho) {
+    public ApiResponse<ItemCarrinho> saveNewItem(ItemCarrinho itemCarrinho) {
         try {
             // Verifica se o usuario existe
             String email = itemCarrinho.getCarrinho().getUsuario().getEmail();
-            UsuarioVO usuario = facade.usuarioRepository.findByEmail(email);
+            Usuario usuario = facade.usuarioRepository.findByEmail(email);
 
             if(usuario != null){
                 // Verifica se o carrinho esta associado ao usuario
-                CarrinhoVO carrinho = usuario.getCarrinho();
+                Carrinho carrinho = usuario.getCarrinho();
 
                 if(carrinho != null){
                     // Salva o novo item e o carrinho associado
-                    ItemCarrinhoVO novoItem = saveItem(itemCarrinho, carrinho);
+                    ItemCarrinho novoItem = saveItem(itemCarrinho, carrinho);
                     saveCartWithNewItem(carrinho, novoItem);
                     return ApiResponse.success(novoItem);
                 }
@@ -78,8 +78,8 @@ class ItemCarrinhoImpl implements ItemCarrinhoService {
         }
     }
 
-    private ItemCarrinhoVO saveItem(ItemCarrinhoVO itemCarrinho, CarrinhoVO carrinho){
-        ItemCarrinhoVO novoItem = ItemCarrinhoVO.builder()
+    private ItemCarrinho saveItem(ItemCarrinho itemCarrinho, Carrinho carrinho){
+        ItemCarrinho novoItem = ItemCarrinho.builder()
                                                 .carrinho(carrinho)
                                                 .evento(itemCarrinho.getEvento())
                                                 .tipoTicket(itemCarrinho.getTipoTicket())
@@ -90,9 +90,9 @@ class ItemCarrinhoImpl implements ItemCarrinhoService {
         return novoItem;
     }
 
-    private CarrinhoVO saveCartWithNewItem(CarrinhoVO carrinho, ItemCarrinhoVO novoItem){
+    private Carrinho saveCartWithNewItem(Carrinho carrinho, ItemCarrinho novoItem){
         if(carrinho.getItensCarrinho() == null){
-            Set<ItemCarrinhoVO> setItens = new HashSet<>();
+            Set<ItemCarrinho> setItens = new HashSet<>();
             setItens.add(novoItem);
             carrinho.setItensCarrinho(setItens);
         } else {
@@ -103,15 +103,15 @@ class ItemCarrinhoImpl implements ItemCarrinhoService {
 
 
     @Override
-    public ApiResponse<ItemCarrinhoVO> updateItem(Long id, ItemCarrinhoVO itemCarrinho) {
+    public ApiResponse<ItemCarrinho> updateItem(Long id, ItemCarrinho itemCarrinho) {
         try {
             // Verifica se a quantidade é maior ou igual a 1, para modificá-la
             if (itemCarrinho.getQuantidade() >= 1) {
-                Optional<ItemCarrinhoVO> item = facade.itemCarrinhoRepository.findById(id);
+                Optional<ItemCarrinho> item = facade.itemCarrinhoRepository.findById(id);
 
                 // Verifica se o item do carrinho ja existe
                 if (item.isPresent()) {
-                    ItemCarrinhoVO itemAtualizado = atualizaItemCarrinho(item.get(), itemCarrinho);
+                    ItemCarrinho itemAtualizado = atualizaItemCarrinho(item.get(), itemCarrinho);
                     saveCartWithNewItem(itemAtualizado.getCarrinho(), itemAtualizado);
                     return ApiResponse.success(itemAtualizado);
                 } else {
@@ -126,8 +126,8 @@ class ItemCarrinhoImpl implements ItemCarrinhoService {
         }
     }
 
-    private ItemCarrinhoVO atualizaItemCarrinho(ItemCarrinhoVO itemAntigo, ItemCarrinhoVO novoItem){
-        ItemCarrinhoVO itemAtualizado = ItemCarrinhoVO.builder()
+    private ItemCarrinho atualizaItemCarrinho(ItemCarrinho itemAntigo, ItemCarrinho novoItem){
+        ItemCarrinho itemAtualizado = ItemCarrinho.builder()
                                                     .id(itemAntigo.getId())
                                                     .carrinho(itemAntigo.getCarrinho())
                                                     .evento(itemAntigo.getEvento())
@@ -140,9 +140,9 @@ class ItemCarrinhoImpl implements ItemCarrinhoService {
     }
 
     @Override
-    public ApiResponse<ItemCarrinhoVO> deleteItemById(Long idItemCarrinho) {
+    public ApiResponse<ItemCarrinho> deleteItemById(Long idItemCarrinho) {
         try {
-            Optional<ItemCarrinhoVO> itemCarrinho = facade.itemCarrinhoRepository.findById(idItemCarrinho);
+            Optional<ItemCarrinho> itemCarrinho = facade.itemCarrinhoRepository.findById(idItemCarrinho);
             // Verifica se o item do carrinho existe
             if (itemCarrinho.isPresent()) {
                 deleteItem(itemCarrinho.get());
@@ -155,7 +155,7 @@ class ItemCarrinhoImpl implements ItemCarrinhoService {
         }
     }
 
-    private void deleteItem(ItemCarrinhoVO itemCarrinho){
+    private void deleteItem(ItemCarrinho itemCarrinho){
         facade.itemCarrinhoRepository.deleteById(itemCarrinho.getId());
     }
 

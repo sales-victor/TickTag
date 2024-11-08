@@ -1,7 +1,7 @@
 package br.com.ticktag.controller;
 
 import br.com.ticktag.dto.EventoFilterDTO;
-import br.com.ticktag.domain.EventoVO;
+import br.com.ticktag.domain.Evento;
 import br.com.ticktag.service.ServiceFacade;
 import br.com.ticktag.util.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,29 +24,29 @@ public class EventoController {
     private final ServiceFacade facade;
 
     @GetMapping()
-    public ApiResponse<List<EventoVO>> findAll() {
+    public ApiResponse<List<Evento>> findAll() {
         return facade.eventoService.findAll();
     }
 
     @GetMapping("/id/{idEvento}")
-    public ApiResponse<EventoVO> findById(@PathVariable Long idEvento) throws Exception {
+    public ApiResponse<Evento> findById(@PathVariable Long idEvento) throws Exception {
         return facade.eventoService.findById(idEvento);
     }
 
     @GetMapping("/filtro")
-    public ApiResponse<List<EventoVO>> findByParams(@ModelAttribute EventoFilterDTO filter) {
+    public ApiResponse<List<Evento>> findByParams(@ModelAttribute EventoFilterDTO filter) {
         return facade.eventoService.findByParams(filter);
     }
 
     @CrossOrigin(origins = "http://localhost:3000") // Add your frontend URL
     @PostMapping()
-    public ApiResponse<EventoVO> save(@RequestBody EventoVO evento) {
+    public ApiResponse<Evento> save(@RequestBody Evento evento) {
         return facade.eventoService.save(evento);
     }
 
 
     @PutMapping()
-    public ApiResponse<EventoVO> update(@RequestBody EventoVO evento) throws Exception {
+    public ApiResponse<Evento> update(@RequestBody Evento evento) throws Exception {
         return facade.eventoService.update(evento);
     }
 

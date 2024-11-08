@@ -1,9 +1,9 @@
 package br.com.ticktag.controller;
 
-import br.com.ticktag.domain.EventoVO;
-import br.com.ticktag.domain.TicketVO;
-import br.com.ticktag.domain.TipoTicketVO;
-import br.com.ticktag.domain.UsuarioVO;
+import br.com.ticktag.domain.Evento;
+import br.com.ticktag.domain.Ticket;
+import br.com.ticktag.domain.TipoTicket;
+import br.com.ticktag.domain.Usuario;
 import br.com.ticktag.service.ServiceFacade;
 import br.com.ticktag.util.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,23 +22,23 @@ public class TicketController {
     private final ServiceFacade facade;
 
     @GetMapping
-    public ApiResponse<List<TicketVO>> findAll() {
+    public ApiResponse<List<Ticket>> findAll() {
         return facade.ticketService.findAll();
     }
 
     @GetMapping("id/{idTicket}")
-    public ApiResponse<TicketVO> findById(@PathVariable Long idTicket) throws Exception {
+    public ApiResponse<Ticket> findById(@PathVariable Long idTicket) throws Exception {
         return facade.ticketService.findById(idTicket);
     }
 
     @PostMapping
-    public ApiResponse<TicketVO> save(@RequestBody TicketVO ticket) {
+    public ApiResponse<Ticket> save(@RequestBody Ticket ticket) {
         return facade.ticketService.saveNewTicket(ticket);
     }
 
     @PutMapping
-    public ApiResponse<TicketVO> update(@RequestBody Long id, Optional<UsuarioVO> usuario,
-                                        Optional<EventoVO> evento, Optional<TipoTicketVO> tipoTicket) throws Exception {
+    public ApiResponse<Ticket> update(@RequestBody Long id, Optional<Usuario> usuario,
+                                      Optional<Evento> evento, Optional<TipoTicket> tipoTicket) throws Exception {
         return facade.ticketService.updateTicket(id, usuario, evento, tipoTicket);
     }
 
