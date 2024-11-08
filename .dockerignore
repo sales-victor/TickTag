@@ -1,6 +1,5 @@
-# Ignore os arquivos e pastas padrão
+# Ignorar arquivos e pastas padrão
 .mvn/wrapper/maven-wrapper.jar
-# Não ignore o diretório target, que contém o JAR do projeto
+
+# Não ignorar o diretório target
 !target/
-# Ignorar arquivos de build e dependências em outros diretórios
-**/target/
