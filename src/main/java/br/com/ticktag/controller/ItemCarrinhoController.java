@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -15,9 +17,14 @@ import org.springframework.web.bind.annotation.*;
 public class ItemCarrinhoController {
     private final ServiceFacade facade;
 
-    @GetMapping("/{idItem}")
-    public ApiResponse<ItemCarrinhoVO> findById(@PathVariable Long idItem) throws Exception {
-        return facade.itemCarrinhoService.findById(idItem);
+    @GetMapping
+    public ApiResponse<List<ItemCarrinhoVO>> findAll(){
+        return facade.itemCarrinhoService.findAll();
+    }
+
+    @GetMapping("/{idItemCarrinho}")
+    public ApiResponse<ItemCarrinhoVO> findById(@PathVariable Long idItemCarrinho) throws Exception {
+        return facade.itemCarrinhoService.findById(idItemCarrinho);
     }
 
     @PostMapping
@@ -25,13 +32,13 @@ public class ItemCarrinhoController {
         return facade.itemCarrinhoService.saveNewItem(itemCarrinho);
     }
 
-    @PutMapping("/{idCarrinho}")
-    public ApiResponse<ItemCarrinhoVO> updateItem(@RequestBody Long id, ItemCarrinhoVO itemCarrinho) throws Exception {
-        return facade.itemCarrinhoService.updateItem(id, itemCarrinho);
+    @PutMapping("/{idItemCarrinho}")
+    public ApiResponse<ItemCarrinhoVO> updateItem(@PathVariable Long idItemCarrinho, @RequestBody ItemCarrinhoVO itemCarrinho) throws Exception {
+        return facade.itemCarrinhoService.updateItem(idItemCarrinho, itemCarrinho);
     }
 
-    @DeleteMapping("/{idCarrinho}")
-    public ApiResponse<String> deleteItemById(@PathVariable Long idItemCarrinho) throws Exception {
+    @DeleteMapping("/{idItemCarrinho}")
+    public ApiResponse<ItemCarrinhoVO> deleteItemById(@PathVariable Long idItemCarrinho) throws Exception {
         return facade.itemCarrinhoService.deleteItemById(idItemCarrinho);
     }
 

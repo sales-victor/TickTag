@@ -19,18 +19,28 @@ public class CarrinhoController {
         return facade.carrinhoService.findById(idCarrinho);
     }
 
+    @GetMapping("/usuario")
+    public ApiResponse<CarrinhoVO> findByUser(@RequestParam("email") String email) throws Exception {
+        return facade.carrinhoService.findByUser(email);
+    }
+
     @PostMapping
     public ApiResponse<CarrinhoVO> saveNewCart(@RequestBody CarrinhoVO carrinho) throws Exception {
         return facade.carrinhoService.saveNewCart(carrinho);
     }
 
     @PutMapping("/{idCarrinho}")
-    public ApiResponse<CarrinhoVO> updateCart(@RequestBody Long id, CarrinhoVO carrinho) throws Exception {
+    public ApiResponse<CarrinhoVO> updateCart(@PathVariable Long id, CarrinhoVO carrinho) throws Exception {
         return facade.carrinhoService.updateCart(id, carrinho);
     }
 
+    @PutMapping("/comprar/{idCarrinho}")
+    public ApiResponse<CarrinhoVO> buyCart(@PathVariable Long idCarrinho, @RequestBody CarrinhoVO carrinho) throws Exception {
+        return facade.carrinhoService.buyCart(idCarrinho, carrinho);
+    }
+
     @DeleteMapping("/{idCarrinho}")
-    public ApiResponse<String> deleteCart(@PathVariable Long idCarrinho) throws Exception {
+    public ApiResponse<CarrinhoVO> deleteCart(@PathVariable Long idCarrinho) throws Exception {
         return facade.carrinhoService.deleteById(idCarrinho);
     }
 
