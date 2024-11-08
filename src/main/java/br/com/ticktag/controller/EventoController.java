@@ -1,17 +1,12 @@
 package br.com.ticktag.controller;
 
-import br.com.ticktag.dto.EventoFilterDTO;
 import br.com.ticktag.domain.Evento;
+import br.com.ticktag.dto.EventoFilterDTO;
 import br.com.ticktag.service.ServiceFacade;
 import br.com.ticktag.util.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -19,7 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/evento")
-@CrossOrigin(origins = "http://localhost:3000")
 public class EventoController {
 
     private final ServiceFacade facade;
