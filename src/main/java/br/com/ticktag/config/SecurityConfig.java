@@ -63,7 +63,7 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/evento/**", "/reports/**", "/ticket/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 //                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
