@@ -1,8 +1,11 @@
 spring:
   datasource:
-    url: ${POSTGRES_DB_URL:jdbc:postgresql://localhost:5433/ticktag}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/ticktag}
     driver-class-name: org.postgresql.Driver
-    username: ${POSTGRES_DB_USERNAME:admin_ticktag}
-    password: ${POSTGRES_DB_PASSWORD:admin}
+    username: ${DATABASE_USER_NAME:postgres}
+    password: ${DATABASE_PASSWORD:753941}
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update

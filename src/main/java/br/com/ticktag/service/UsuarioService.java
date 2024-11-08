@@ -1,6 +1,6 @@
 package br.com.ticktag.service;
 
-import br.com.ticktag.domain.UsuarioVO;
+import br.com.ticktag.domain.Usuario;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -9,13 +9,13 @@ import java.util.Optional;
 
 @Service
 public interface UsuarioService {
-    List<UsuarioVO> listarUsuarios();
+    List<Usuario> listarUsuarios();
 
-    UsuarioVO salvarUsuario(UsuarioVO usuario) throws ResponseStatusException;
+    Usuario salvarUsuario(Usuario usuario) throws ResponseStatusException;
 
-    Optional<UsuarioVO> buscarPorId(Long id);
+    Optional<Usuario> buscarPorId(Long id);
 
     void deletarUsuario(Long id);
 
-    UsuarioVO buscarPorEmail(String email);
+    Usuario buscarPorEmail(String email);
 }

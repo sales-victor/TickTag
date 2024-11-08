@@ -1,11 +1,11 @@
 spring:
   profiles:
-    active: mysql
+    active: postgres
   application:
     name: TickTag
 
 url:
-  front: http://localhost:3000
+  front: ${URL_FRONT:http://localhost:3000}
 
 logging:
   level:

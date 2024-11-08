@@ -1,9 +1,9 @@
 package br.com.ticktag.service.impl;
 
-import br.com.ticktag.domain.EventoVO;
-import br.com.ticktag.domain.TicketVO;
-import br.com.ticktag.domain.TipoTicketVO;
-import br.com.ticktag.domain.UsuarioVO;
+import br.com.ticktag.domain.Evento;
+import br.com.ticktag.domain.Ticket;
+import br.com.ticktag.domain.TipoTicket;
+import br.com.ticktag.domain.Usuario;
 import br.com.ticktag.repository.RepositoryFacade;
 import br.com.ticktag.service.TicketService;
 import br.com.ticktag.util.ApiResponse;
@@ -23,9 +23,9 @@ class TicketServiceImpl implements TicketService {
     private final RepositoryFacade facade;
 
     @Override
-    public ApiResponse<List<TicketVO>> findAll() {
+    public ApiResponse<List<Ticket>> findAll() {
         try {
-            List<TicketVO> listaTickets = facade.ticketRepository.findAll();
+            List<Ticket> listaTickets = facade.ticketRepository.findAll();
             if (!listaTickets.isEmpty()) {
                 return ApiResponse.success(listaTickets);
             } else {
@@ -37,9 +37,9 @@ class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public ApiResponse<TicketVO> findById(Long idTicket) {
+    public ApiResponse<Ticket> findById(Long idTicket) {
         try {
-            Optional<TicketVO> ticket = facade.ticketRepository.findById(idTicket);
+            Optional<Ticket> ticket = facade.ticketRepository.findById(idTicket);
             if (ticket.isPresent()) {
                 return ApiResponse.success(ticket.get());
             } else {
@@ -53,21 +53,21 @@ class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public ApiResponse<TicketVO> saveNewTicket(TicketVO ticket) {
+    public ApiResponse<Ticket> saveNewTicket(Ticket ticket) {
         try {
             // Gera o hashCode para o ticket
             String hashCode = this.generateHashCode(ticket);
             ticket.setHashCode(hashCode);
 
             // Obtém o usuário associado ao ticket
-            UsuarioVO usuario = ticket.getUsuarioVO();
+            Usuario usuario = ticket.getUsuario();
             // Adiciona o ticket ao conjunto de tickets do usuário
             usuario.getTickets().add(ticket);
             // Salva o usuário com o novo ticket
             facade.usuarioRepository.save(usuario);
 
             // Obtém o evento associado ao ticket
-            EventoVO evento = ticket.getEventoVO();
+            Evento evento = ticket.getEvento();
             // Adiciona o ticket ao conjunto de tickets do evento
             evento.getTicketsEvento().add(ticket);
             // Salva o evento com o novo ticket
@@ -85,10 +85,10 @@ class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public ApiResponse<TicketVO> updateTicket(Long id, Optional<UsuarioVO> usuario, Optional<EventoVO> evento,
-                                              Optional<TipoTicketVO> tipoTicket) {
+    public ApiResponse<Ticket> updateTicket(Long id, Optional<Usuario> usuario, Optional<Evento> evento,
+                                            Optional<TipoTicket> tipoTicket) {
         try {
-            Optional<TicketVO> ticket = facade.ticketRepository.findById(id);
+            Optional<Ticket> ticket = facade.ticketRepository.findById(id);
             if (ticket.isPresent()) {
                 if (usuario.isPresent()) {
                     try {
@@ -122,7 +122,7 @@ class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public ApiResponse<String> deleteTicket(TicketVO ticket) {
+    public ApiResponse<String> deleteTicket(Ticket ticket) {
         try {
             facade.ticketRepository.deleteById(ticket.getId());
             return ApiResponse.success(String.format("Ticket %d excluido com sucesso", ticket.getHashCode()));
@@ -141,17 +141,17 @@ class TicketServiceImpl implements TicketService {
         }
     }
 
-    private String generateHashCode(TicketVO ticket) {
-        String user = ticket.getUsuarioVO().getNome();
-        String event = ticket.getEventoVO().getNomeEvento();
-        String ticketType = ticket.getTipoTicketVO().getTipoTicket();
+    private String generateHashCode(Ticket ticket) {
+        String user = ticket.getUsuario().getNome();
+        String event = ticket.getEvento().getNomeEvento();
+        String ticketType = ticket.getTipoTicket().getTipoTicket();
         String hash = UtilApp.generateHashCode(user, event, ticketType);
         return hash;
     }
 
-    private void updateUserTickets(TicketVO ticket, UsuarioVO user) {
-        UsuarioVO oldUser = ticket.getUsuarioVO();
-        Set<TicketVO> ticketsOldUser = oldUser.getTickets();
+    private void updateUserTickets(Ticket ticket, Usuario user) {
+        Usuario oldUser = ticket.getUsuario();
+        Set<Ticket> ticketsOldUser = oldUser.getTickets();
 
         // Verifica se o usuário antigo realmente possui o ticket
         if (ticketsOldUser.contains(ticket)) {
@@ -160,7 +160,7 @@ class TicketServiceImpl implements TicketService {
             oldUser.setTickets(ticketsOldUser);
 
             // Atualiza a associação do ticket para o novo usuário
-            ticket.setUsuarioVO(user);
+            ticket.setUsuario(user);
 
             // Adiciona o ticket ao conjunto de tickets do novo usuário
             user.getTickets().add(ticket);
@@ -175,9 +175,9 @@ class TicketServiceImpl implements TicketService {
         }
     }
 
-    private void updateEventTickets(TicketVO ticket, EventoVO event) {
-        EventoVO oldEvent = ticket.getEventoVO();
-        Set<TicketVO> ticketsOldEvent = oldEvent.getTicketsEvento();
+    private void updateEventTickets(Ticket ticket, Evento event) {
+        Evento oldEvent = ticket.getEvento();
+        Set<Ticket> ticketsOldEvent = oldEvent.getTicketsEvento();
 
         // Verifica se o evento antigo realmente contém o ticket
         if (ticketsOldEvent.contains(ticket)) {
@@ -186,7 +186,7 @@ class TicketServiceImpl implements TicketService {
             oldEvent.setTicketsEvento(ticketsOldEvent);
 
             // Atualiza a associação do ticket para o novo evento
-            ticket.setEventoVO(event);
+            ticket.setEvento(event);
 
             // Adiciona o ticket ao conjunto de tickets do novo evento
             event.getTicketsEvento().add(ticket);
@@ -201,8 +201,8 @@ class TicketServiceImpl implements TicketService {
         }
     }
 
-    private void updateTicketType(TicketVO ticket, TipoTicketVO tipoTicket) {
-        ticket.setTipoTicketVO(tipoTicket);
+    private void updateTicketType(Ticket ticket, TipoTicket tipoTicket) {
+        ticket.setTipoTicket(tipoTicket);
         facade.ticketRepository.save(ticket);
     }
 }

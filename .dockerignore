@@ -1,0 +1,5 @@
+# Ignorar arquivos e pastas padrão
+.mvn/wrapper/maven-wrapper.jar
+
+# Não ignorar o diretório target
+!target/

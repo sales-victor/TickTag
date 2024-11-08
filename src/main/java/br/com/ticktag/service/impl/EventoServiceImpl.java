@@ -1,8 +1,8 @@
 package br.com.ticktag.service.impl;
 
-import br.com.ticktag.domain.EnderecoVO;
-import br.com.ticktag.domain.EventoVO;
-import br.com.ticktag.domain.TipoTicketVO;
+import br.com.ticktag.domain.Endereco;
+import br.com.ticktag.domain.Evento;
+import br.com.ticktag.domain.TipoTicket;
 import br.com.ticktag.dto.EventoFilterDTO;
 import br.com.ticktag.repository.RepositoryFacade;
 import br.com.ticktag.service.EventoService;
@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -30,9 +29,9 @@ class EventoServiceImpl implements EventoService {
     private final RepositoryFacade facade;
 
     @Override
-    public ApiResponse<List<EventoVO>> findAll() {
+    public ApiResponse<List<Evento>> findAll() {
         try {
-            List<EventoVO> listEvento = facade.eventoRepository.findAll();
+            List<Evento> listEvento = facade.eventoRepository.findAll();
             if (!listEvento.isEmpty()) {
                 return ApiResponse.success(listEvento);
             } else {
@@ -44,10 +43,10 @@ class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public ApiResponse<EventoVO> findById(Long idEvento) {
+    public ApiResponse<Evento> findById(Long idEvento) {
 
         try {
-            Optional<EventoVO> evento = facade.eventoRepository.findById(idEvento);
+            Optional<Evento> evento = facade.eventoRepository.findById(idEvento);
             return evento.map(ApiResponse::success).orElseGet(() -> ApiResponse.error("Eventos não encontrados", HttpStatus.NO_CONTENT));
         } catch (Exception e) {
             return ApiResponse.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -56,13 +55,13 @@ class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public ApiResponse<List<EventoVO>> findByParams(EventoFilterDTO filter) {
+    public ApiResponse<List<Evento>> findByParams(EventoFilterDTO filter) {
         try {
 
-            Example<EventoVO> example = Example.of(buildEventoFromFilter(filter),
+            Example<Evento> example = Example.of(buildEventoFromFilter(filter),
                     ExampleMatcherUtil.getCaseInsensitiveAndContainedExampleMatcher());
 
-            List<EventoVO> listaExemplo = facade.eventoRepository.findAll(example);
+            List<Evento> listaExemplo = facade.eventoRepository.findAll(example);
             if (!listaExemplo.isEmpty()) {
                 return ApiResponse.success(listaExemplo);
             } else {
@@ -75,16 +74,16 @@ class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public ApiResponse<EventoVO> save(EventoVO evento) {
+    public ApiResponse<Evento> save(Evento evento) {
 
         try {
-            EventoVO newEvento = salvarEvento(evento);
+            Evento newEvento = salvarEvento(evento);
 
-            EnderecoVO endereco = evento.getEnderecoVO();
+            Endereco endereco = evento.getEndereco();
             endereco.setIdEvento(newEvento.getId());
-            newEvento.setEnderecoVO(facade.enderecoRepository.save(endereco));
+            newEvento.setEndereco(facade.enderecoRepository.save(endereco));
 
-            Set<TipoTicketVO> listTicket = salvarTickets(evento, newEvento);
+            Set<TipoTicket> listTicket = salvarTickets(evento, newEvento);
             newEvento.setTickets(listTicket);
 
             return ApiResponse.success(newEvento);
@@ -95,14 +94,14 @@ class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public ApiResponse<EventoVO> update(EventoVO evento) {
+    public ApiResponse<Evento> update(Evento evento) {
 
         try {
-            EventoVO newEvento = salvarEventoEdicao(evento);
+            Evento newEvento = salvarEventoEdicao(evento);
 
-            newEvento.setEnderecoVO(facade.enderecoRepository.save(evento.getEnderecoVO()));
+            newEvento.setEndereco(facade.enderecoRepository.save(evento.getEndereco()));
 
-            Set<TipoTicketVO> listTicket = salvarTickets(evento, newEvento);
+            Set<TipoTicket> listTicket = salvarTickets(evento, newEvento);
             newEvento.setTickets(listTicket);
 
             return ApiResponse.success(newEvento);
@@ -129,9 +128,9 @@ class EventoServiceImpl implements EventoService {
 
     }
 
-    private EventoVO salvarEventoEdicao(EventoVO evento) {
+    private Evento salvarEventoEdicao(Evento evento) {
         return facade.eventoRepository.save(
-                EventoVO.builder()
+                Evento.builder()
                         .id(evento.getId())
                         .nomeEvento(evento.getNomeEvento())
                         .statusEvento(evento.getStatusEvento())
@@ -141,7 +140,7 @@ class EventoServiceImpl implements EventoService {
                         .build());
     }
 
-    private Set<TipoTicketVO> salvarTickets(EventoVO evento, EventoVO newEvento) {
+    private Set<TipoTicket> salvarTickets(Evento evento, Evento newEvento) {
         return evento.getTickets().stream()
                 .map(ticket -> {
                     ticket.setIdEvento(newEvento.getId());
@@ -150,9 +149,9 @@ class EventoServiceImpl implements EventoService {
                 .collect(Collectors.toSet());
     }
 
-    private EventoVO salvarEvento(EventoVO evento) throws IOException {
+    private Evento salvarEvento(Evento evento) throws IOException {
         return facade.eventoRepository.save(
-                EventoVO.builder()
+                Evento.builder()
                         .nomeEvento(evento.getNomeEvento())
                         .statusEvento(evento.getStatusEvento())
                         .dataEvento(evento.getDataEvento())
@@ -162,8 +161,8 @@ class EventoServiceImpl implements EventoService {
                         .build());
     }
 
-    private EventoVO buildEventoFromFilter(EventoFilterDTO filter) {
-        EventoVO evento = new EventoVO();
+    private Evento buildEventoFromFilter(EventoFilterDTO filter) {
+        Evento evento = new Evento();
         evento.setClassificacaoIdade(filter.getClassificacaoIdade());
         evento.setDataEvento(filter.getDataEvento());
         evento.setLotacaoMaxima(filter.getLotacaoMaxima());

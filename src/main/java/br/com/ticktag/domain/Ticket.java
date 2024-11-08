@@ -14,7 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TicketVO implements Serializable {
+public class Ticket implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,15 +26,15 @@ public class TicketVO implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "ID_USUARIO")
-    private UsuarioVO usuarioVO;
+    private Usuario usuario;
 
     @ManyToOne
     @JoinColumn(name = "ID_EVENTO")
-    private EventoVO eventoVO;
+    private Evento evento;
 
     @ManyToOne
     @JoinColumn(name = "ID_TIPO_TICKET")
-    private TipoTicketVO tipoTicketVO;
+    private TipoTicket tipoTicket;
 
     @Column(name = "HASH_CODE")
     private String hashCode;

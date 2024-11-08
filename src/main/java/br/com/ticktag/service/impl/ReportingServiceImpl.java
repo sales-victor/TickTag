@@ -1,6 +1,6 @@
 package br.com.ticktag.service.impl;
 
-import br.com.ticktag.domain.EventoVO;
+import br.com.ticktag.domain.Evento;
 import br.com.ticktag.repository.RepositoryFacade;
 import br.com.ticktag.service.ReportingService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ class ReportingServiceImpl implements ReportingService {
     // Relatório de Utilização da Capacidade dos Eventos
     @Override
     public List<Map<String, Object>> getUtilizacaoCapacidadeEvento() {
-        List<EventoVO> events = facade.eventoRepository.findAll();
+        List<Evento> events = facade.eventoRepository.findAll();
         if (events.isEmpty()) {
             return Collections.emptyList(); // Ensure an empty response if there are no events
         }
@@ -37,12 +37,12 @@ class ReportingServiceImpl implements ReportingService {
     // Relatório de Top Eventos por Capacidade
     @Override
     public List<Map<String, Object>> getTopEventosPorCapacidade(int limit) {
-        List<EventoVO> events = facade.eventoRepository.findAll();
+        List<Evento> events = facade.eventoRepository.findAll();
         if (events.isEmpty()) {
             return Collections.emptyList();
         }
 
-        return events.stream().sorted(Comparator.comparing(EventoVO::getLotacaoMaxima).reversed()).limit(limit).map(event -> {
+        return events.stream().sorted(Comparator.comparing(Evento::getLotacaoMaxima).reversed()).limit(limit).map(event -> {
             Map<String, Object> report = new HashMap<>();
             report.put("nomeEvento", event.getNomeEvento());
             report.put("lotacaoMaxima", event.getLotacaoMaxima());
@@ -53,7 +53,7 @@ class ReportingServiceImpl implements ReportingService {
     // Relatório de Distribuição de Eventos por Data
     @Override
     public Map<String, Long> getDistribuicaoEventosPorData() {
-        List<EventoVO> events = facade.eventoRepository.findAll();
+        List<Evento> events = facade.eventoRepository.findAll();
         if (events.isEmpty()) {
             return Collections.emptyMap();
         }
@@ -71,28 +71,28 @@ class ReportingServiceImpl implements ReportingService {
     // Relatório de Classificacao Etária
     @Override
     public Map<Long, Long> getClassificacaoEtariaEventos() {
-        List<EventoVO> events = facade.eventoRepository.findAll();
+        List<Evento> events = facade.eventoRepository.findAll();
         if (events.isEmpty()) {
             return Collections.emptyMap();
         }
 
-        return events.stream().collect(Collectors.groupingBy(EventoVO::getClassificacaoIdade, Collectors.counting()));
+        return events.stream().collect(Collectors.groupingBy(Evento::getClassificacaoIdade, Collectors.counting()));
     }
 
     // Relatório de Capacidade Média dos Eventos
     @Override
     public Map<String, Object> getCapacidadeMediaEvento() {
-        List<EventoVO> events = facade.eventoRepository.findAll();
+        List<Evento> events = facade.eventoRepository.findAll();
         if (events.isEmpty()) {
             return Map.of("capacidadeMedia", 0);
         }
 
-        Double averageCapacity = events.stream().collect(Collectors.averagingLong(EventoVO::getLotacaoMaxima));
+        Double averageCapacity = events.stream().collect(Collectors.averagingLong(Evento::getLotacaoMaxima));
 
         return Map.of("capacidadeMedia", averageCapacity);
     }
 
-    public void saveEvent(EventoVO event) {
+    public void saveEvent(Evento event) {
         facade.eventoRepository.save(event);
     }
 

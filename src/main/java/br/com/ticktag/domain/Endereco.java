@@ -14,7 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class EnderecoVO implements Serializable {
+public class Endereco implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
