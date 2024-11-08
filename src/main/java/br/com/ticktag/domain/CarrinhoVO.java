@@ -1,9 +1,7 @@
 package br.com.ticktag.domain;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -25,10 +23,15 @@ public class CarrinhoVO implements Serializable{
     @Column(name = "ID")
     private Long id;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToOne
     @JoinColumn(name = "ID_USUARIO")
     private UsuarioVO usuario;
 
-    @OneToMany(mappedBy = "carrinho")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @JsonManagedReference
+    @OneToMany(mappedBy = "carrinho", fetch = FetchType.LAZY)
     private Set<ItemCarrinhoVO> itensCarrinho = new HashSet<>();
 }
