@@ -1,10 +1,8 @@
 package br.com.ticktag.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -46,6 +44,7 @@ public class EventoVO implements Serializable {
     private Set<TipoTicketVO> tickets = new HashSet<>();
 
     @OneToMany
+    @JsonIgnore
     @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID_EVENTO", insertable = false, updatable = false)
     private Set<TicketVO> ticketsEvento = new HashSet<>();
 
