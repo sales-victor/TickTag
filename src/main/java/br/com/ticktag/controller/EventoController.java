@@ -19,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/evento")
+@CrossOrigin(origins = "http://localhost:3000")
 public class EventoController {
 
     private final ServiceFacade facade;
@@ -38,12 +39,11 @@ public class EventoController {
         return facade.eventoService.findByParams(filter);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000") // Add your frontend URL
+    // Add your frontend URL
     @PostMapping()
     public ApiResponse<EventoVO> save(@RequestBody EventoVO evento) {
         return facade.eventoService.save(evento);
     }
-
 
     @PutMapping()
     public ApiResponse<EventoVO> update(@RequestBody EventoVO evento) throws Exception {
