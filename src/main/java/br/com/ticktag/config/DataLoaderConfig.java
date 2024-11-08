@@ -70,8 +70,12 @@ public class DataLoaderConfig {
                 // Criar usuário com role de ADMIN
                 Usuario adminUser = new Usuario();
                 Carrinho carrinhoAdmin = new Carrinho();
+                adminUser.setTickets(tickets);
                 adminUser.setNome("Administrador");
                 adminUser.setEmail("admin@ticktag.com");
+                adminUser.setPassword(passwordEncoder.encode("admin123")); // Senha criptografada
+                adminUser.setCpf("00000000000");
+                adminUser.setDataNascimento(LocalDate.of(1980, 1, 1)); // Data de nascimento padrão
                 adminUser.setRoles(rolesAdmin); // Associa a role de ADMIN
                 carrinhoAdmin.setUsuario(adminUser);
                 adminUser.setCarrinho(carrinhoAdmin);

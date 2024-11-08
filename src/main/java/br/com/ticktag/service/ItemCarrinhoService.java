@@ -1,6 +1,6 @@
 package br.com.ticktag.service;
 
-import br.com.ticktag.domain.ItemCarrinhoVO;
+import br.com.ticktag.domain.ItemCarrinho;
 import br.com.ticktag.util.ApiResponse;
 import org.springframework.stereotype.Service;
 
@@ -9,13 +9,13 @@ import java.util.List;
 @Service
 public interface ItemCarrinhoService {
 
-    ApiResponse<List<ItemCarrinhoVO>> findAll();
+    ApiResponse<List<ItemCarrinho>> findAll();
 
-    ApiResponse<ItemCarrinhoVO> findById(Long idItemCarrinho);
+    ApiResponse<ItemCarrinho> findById(Long idItemCarrinho);
 
-    ApiResponse<ItemCarrinhoVO> saveNewItem(ItemCarrinhoVO itemCarrinho);
+    ApiResponse<ItemCarrinho> saveNewItem(ItemCarrinho itemCarrinho);
 
-    ApiResponse<ItemCarrinhoVO> updateItem(Long id, ItemCarrinhoVO itemCarrinho);
+    ApiResponse<ItemCarrinho> updateItem(Long id, ItemCarrinho itemCarrinho);
 
-    ApiResponse<ItemCarrinhoVO> deleteItemById(Long idItemCarrinho);
+    ApiResponse<ItemCarrinho> deleteItemById(Long idItemCarrinho);
 }
