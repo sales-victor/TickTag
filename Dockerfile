@@ -1,11 +1,12 @@
-# Use uma imagem base do Java
+# Use a imagem base do OpenJDK
 FROM openjdk:17-jdk-slim
 
-# Defina o diretório de trabalho
+# Define o diretório de trabalho
 WORKDIR /app
 
-# Copie o JAR do seu projeto para a imagem
-COPY target/TickTag.jar app.jar
+# Copie o JAR repackaged do seu projeto para a imagem
+COPY target/TickTag-1.0.0.jar app.jar
 
 # Comando para executar o aplicativo
-CMD ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
