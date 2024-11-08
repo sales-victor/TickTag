@@ -2,6 +2,7 @@ package br.com.ticktag.service.impl;
 
 import br.com.ticktag.domain.Role;
 import br.com.ticktag.domain.Usuario;
+import br.com.ticktag.domain.Carrinho;
 import br.com.ticktag.repository.RepositoryFacade;
 import br.com.ticktag.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,12 @@ class UsuarioServiceImpl implements UsuarioService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         usuario.setRoles(roles);
+
+        // Adiciona um novo carrinho para o usuário
+        Carrinho carrinho = Carrinho.builder().usuario(usuario).build();
+        carrinho.setUsuario(usuario);
+        usuario.setCarrinho(carrinho);
+
         // Adicionar lógica de validação de CPF, email, etc.
         return facade.usuarioRepository.save(usuario);
     }
