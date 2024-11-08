@@ -36,7 +36,7 @@ public class Evento implements Serializable {
     private Date dataEvento;
 
     @OneToOne
-    @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID_EVENTO", insertable = false, updatable = false)
+    @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID_EVENTO")
     private Endereco endereco;
 
     @OneToMany
