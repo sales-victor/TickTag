@@ -1,10 +1,8 @@
 package br.com.ticktag.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -38,7 +36,7 @@ public class Evento implements Serializable {
     private Date dataEvento;
 
     @OneToOne
-    @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID_EVENTO", insertable = false, updatable = false)
+    @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID_EVENTO")
     private Endereco endereco;
 
     @OneToMany
@@ -46,6 +44,7 @@ public class Evento implements Serializable {
     private Set<TipoTicket> tickets = new HashSet<>();
 
     @OneToMany
+    @JsonIgnore
     @JoinColumn(name = "ID_EVENTO", referencedColumnName = "ID_EVENTO", insertable = false, updatable = false)
     private Set<Ticket> ticketsEvento = new HashSet<>();
 
@@ -56,7 +55,7 @@ public class Evento implements Serializable {
     private Long classificacaoIdade;
 
     @Lob
-    @Column(name = "CAPA_EVENTO")
+    @Column(name = "CAPA_EVENTO", columnDefinition = "MEDIUMBLOB")
     private byte[] capaEvento;
 
     @Transient

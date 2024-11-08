@@ -12,4 +12,6 @@ public class RepositoryFacade {
     public final UsuarioRepository usuarioRepository;
     public final TicketRepository ticketRepository;
     public final TipoTicketRepository tipoTicketRepository;
+    public final CarrinhoRepository carrinhoRepository;
+    public final ItemCarrinhoRepository itemCarrinhoRepository;
 }
