@@ -3,10 +3,7 @@ package br.com.ticktag.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -65,6 +62,7 @@ public class UsuarioVO implements Serializable {
     @JsonIgnore
     private Set<TicketVO> tickets;
 
+    @ToString.Exclude
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonIgnore
     private CarrinhoVO carrinho;
