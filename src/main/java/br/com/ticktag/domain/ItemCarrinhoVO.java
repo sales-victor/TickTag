@@ -1,10 +1,8 @@
 package br.com.ticktag.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -23,23 +21,25 @@ public class ItemCarrinhoVO implements Serializable {
     @Column(name = "ID_ITEM_CARRINHO")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "ID_CARRINHO", nullable = false)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ID_CARRINHO")
     private CarrinhoVO carrinho;
 
-    @Column(name = "ID_EVENTO")
-    private Long idEvento;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "EVENTO")
+    private EventoVO evento;
 
-    @Column(name = "NOME_EVENTO")
-    private String nomeEvento;
-
-    @Column(name = "ID_TIPO_TICKET")
-    private Long idTipoTicket;
-
-    @Column(name = "NOME_TIPO_TICKET")
-    private String nomeTipoTicket;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "TIPO_TICKET")
+    private TipoTicketVO tipoTicket;
 
     @Column(name = "QUANTIDADE")
-    private Long quantitidade;
+    private Long quantidade;
+
+    @Column(name = "STATUS")
+    private String status;
 
 }
