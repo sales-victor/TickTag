@@ -1,7 +1,7 @@
 package br.com.ticktag.service.impl;
 
-import br.com.ticktag.domain.RoleVO;
-import br.com.ticktag.domain.UsuarioVO;
+import br.com.ticktag.domain.Role;
+import br.com.ticktag.domain.Usuario;
 import br.com.ticktag.repository.RepositoryFacade;
 import br.com.ticktag.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
@@ -20,15 +20,15 @@ class UsuarioServiceImpl implements UsuarioService {
 
     private final RepositoryFacade facade;
 
-    public List<UsuarioVO> listarUsuarios() {
+    public List<Usuario> listarUsuarios() {
         return facade.usuarioRepository.findAll();
     }
 
-    public UsuarioVO salvarUsuario(UsuarioVO usuario) throws ResponseStatusException {
+    public Usuario salvarUsuario(Usuario usuario) throws ResponseStatusException {
 
         // Atribuir uma role padrão (ADMIN por exemplo)
-        Set<RoleVO> roles = new HashSet<>();
-        RoleVO adminRole = facade.roleRepository.findByNome("ADMIN");
+        Set<Role> roles = new HashSet<>();
+        Role adminRole = facade.roleRepository.findByNome("ADMIN");
         if (adminRole != null) {
             roles.add(adminRole);
         } else {
@@ -43,11 +43,11 @@ class UsuarioServiceImpl implements UsuarioService {
         facade.usuarioRepository.deleteById(id);
     }
 
-    public UsuarioVO buscarPorEmail(String email) {
+    public Usuario buscarPorEmail(String email) {
         return facade.usuarioRepository.findByEmail(email);
     }
 
-    public Optional<UsuarioVO> buscarPorId(Long id) {
+    public Optional<Usuario> buscarPorId(Long id) {
         return facade.usuarioRepository.findById(id);
     }
 }

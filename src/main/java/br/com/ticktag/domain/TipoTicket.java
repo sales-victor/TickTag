@@ -16,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TipoTicketVO implements Serializable {
+public class TipoTicket implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -46,7 +46,7 @@ public class TipoTicketVO implements Serializable {
     @Column(name = "STATUS_TICKET")
     private String statusTicket;
 
-    @OneToMany(mappedBy = "tipoTicketVO", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<TicketVO> tickets = new HashSet<>();
+    @OneToMany(mappedBy = "tipoTicket", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Ticket> tickets = new HashSet<>();
 }
 

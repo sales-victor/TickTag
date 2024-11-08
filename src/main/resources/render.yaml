@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: Backend
+    env: java
+    plan: free
+    buildCommand: "mvn clean package"
+    startCommand: "java -jar target/TickTag.jar"
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: postgres
+    runtime: docker

@@ -18,7 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UsuarioVO implements Serializable {
+public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -54,7 +54,7 @@ public class UsuarioVO implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "ID_ROLE")
     )
     @JsonIgnore
-    private Set<RoleVO> roles; // Grupos de acesso
+    private Set<Role> roles; // Grupos de acesso
 
     @ManyToMany
     @JoinTable(
@@ -63,5 +63,5 @@ public class UsuarioVO implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "ID_TICKETS")
     )
     @JsonIgnore
-    private Set<TicketVO> tickets;
+    private Set<Ticket> tickets;
 }

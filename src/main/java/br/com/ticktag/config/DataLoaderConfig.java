@@ -1,8 +1,8 @@
 package br.com.ticktag.config;
 
-import br.com.ticktag.domain.RoleVO;
-import br.com.ticktag.domain.TicketVO;
-import br.com.ticktag.domain.UsuarioVO;
+import br.com.ticktag.domain.Role;
+import br.com.ticktag.domain.Ticket;
+import br.com.ticktag.domain.Usuario;
 import br.com.ticktag.repository.RepositoryFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,15 +29,15 @@ public class DataLoaderConfig {
             // Verifica se as roles já existem no banco de dados
             if (facade.roleRepository.count() == 0) {
                 // Criar as roles
-                RoleVO admin = new RoleVO();
+                Role admin = new Role();
                 admin.setId(1L);
                 admin.setNome("ADMIN");
 
-                RoleVO analista = new RoleVO();
+                Role analista = new Role();
                 analista.setId(2L);
                 analista.setNome("ANALISTA");
 
-                RoleVO comercial = new RoleVO();
+                Role comercial = new Role();
                 comercial.setId(3L);
                 comercial.setNome("COMERCIAL");
 
@@ -53,24 +53,24 @@ public class DataLoaderConfig {
             // Verifica se o usuário padrão já existe
             if (facade.usuarioRepository.count() == 0) {
                 // Buscar as roles criadas
-                RoleVO adminRole = facade.roleRepository.findByNome("ADMIN");
-                RoleVO analistaRole = facade.roleRepository.findByNome("ANALISTA");
-                RoleVO comercialRole = facade.roleRepository.findByNome("COMERCIAL");
+                Role adminRole = facade.roleRepository.findByNome("ADMIN");
+                Role analistaRole = facade.roleRepository.findByNome("ANALISTA");
+                Role comercialRole = facade.roleRepository.findByNome("COMERCIAL");
 
                 // Criação do conjunto de roles para o usuário padrão
-                Set<RoleVO> rolesAdmin = new HashSet<>();
+                Set<Role> rolesAdmin = new HashSet<>();
                 rolesAdmin.add(adminRole);
 
-                Set<RoleVO> rolesAnalista = new HashSet<>();
+                Set<Role> rolesAnalista = new HashSet<>();
                 rolesAnalista.add(analistaRole);
 
-                Set<RoleVO> rolesComercial = new HashSet<>();
+                Set<Role> rolesComercial = new HashSet<>();
                 rolesComercial.add(comercialRole);
 
-                Set<TicketVO> tickets = new HashSet<>();
+                Set<Ticket> tickets = new HashSet<>();
 
                 // Criar usuário com role de ADMIN
-                UsuarioVO adminUser = new UsuarioVO();
+                Usuario adminUser = new Usuario();
                 adminUser.setTickets(tickets);
                 adminUser.setNome("Administrador");
                 adminUser.setEmail("admin@ticktag.com");
@@ -81,7 +81,7 @@ public class DataLoaderConfig {
                 facade.usuarioRepository.save(adminUser);
 
                 // Criar usuário com role de ANALISTA
-                UsuarioVO analistaUser = new UsuarioVO();
+                Usuario analistaUser = new Usuario();
                 analistaUser.setTickets(tickets);
                 analistaUser.setNome("Analista");
                 analistaUser.setEmail("analista@ticktag.com");
@@ -92,7 +92,7 @@ public class DataLoaderConfig {
                 facade.usuarioRepository.save(analistaUser);
 
                 // Criar usuário com role de COMERCIAL
-                UsuarioVO comercialUser = new UsuarioVO();
+                Usuario comercialUser = new Usuario();
                 comercialUser.setTickets(tickets);
                 comercialUser.setNome("Comercial");
                 comercialUser.setEmail("comercial@ticktag.com");

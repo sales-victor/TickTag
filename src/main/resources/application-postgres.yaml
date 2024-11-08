@@ -1,8 +1,11 @@
 spring:
   datasource:
-    url: ${POSTGRES_DB_URL:jdbc:postgresql://localhost:5433/ticktag}
+    url: jdbc:postgresql://dpg-csmktlpu0jms7390n5gg-a.oregon-postgres.render.com:5432/ticktag
     driver-class-name: org.postgresql.Driver
-    username: ${POSTGRES_DB_USERNAME:admin_ticktag}
-    password: ${POSTGRES_DB_PASSWORD:admin}
+    username: ticktag_user
+    password: kuOqKz7zVpUzJmnz140YRUfGtH7gwUeo
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update

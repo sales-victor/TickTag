@@ -1,6 +1,6 @@
 package br.com.ticktag.controller;
 
-import br.com.ticktag.domain.UsuarioVO;
+import br.com.ticktag.domain.Usuario;
 import br.com.ticktag.service.ServiceFacade;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +23,8 @@ public class UsuarioController {
     private final PasswordEncoder passwordEncoder;
 
     @GetMapping
-    public ResponseEntity<List<UsuarioVO>> listarUsuarios() {
-        List<UsuarioVO> usuarios = facade.usuarioService.listarUsuarios();
+    public ResponseEntity<List<Usuario>> listarUsuarios() {
+        List<Usuario> usuarios = facade.usuarioService.listarUsuarios();
         if (usuarios.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -32,7 +32,7 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioVO> criarUsuario(@Valid @RequestBody UsuarioVO usuario) {
+    public ResponseEntity<Usuario> criarUsuario(@Valid @RequestBody Usuario usuario) {
         // Validações de dados obrigatórios
         if (usuario.getEmail() == null || usuario.getEmail().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -42,13 +42,13 @@ public class UsuarioController {
         }
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 
-        UsuarioVO usuarioSalvo = facade.usuarioService.salvarUsuario(usuario);
+        Usuario usuarioSalvo = facade.usuarioService.salvarUsuario(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioSalvo);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarUsuario(@PathVariable Long id) {
-        Optional<UsuarioVO> usuario = facade.usuarioService.buscarPorId(id);
+        Optional<Usuario> usuario = facade.usuarioService.buscarPorId(id);
         if (usuario.isPresent()) {
             facade.usuarioService.deletarUsuario(id);
             return ResponseEntity.noContent().build();
@@ -58,8 +58,8 @@ public class UsuarioController {
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<UsuarioVO> buscarUsuarioPorEmail(@PathVariable String email) {
-        UsuarioVO usuario = facade.usuarioService.buscarPorEmail(email);
+    public ResponseEntity<Usuario> buscarUsuarioPorEmail(@PathVariable String email) {
+        Usuario usuario = facade.usuarioService.buscarPorEmail(email);
         if (usuario != null) {
             return ResponseEntity.ok(usuario);
         } else {
@@ -68,8 +68,8 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioVO> buscarUsuarioPorId(@PathVariable Long id) {
-        Optional<UsuarioVO> usuario = facade.usuarioService.buscarPorId(id);
+    public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable Long id) {
+        Optional<Usuario> usuario = facade.usuarioService.buscarPorId(id);
         return usuario.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 }

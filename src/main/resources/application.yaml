@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: mysql
+    active: postgres
   application:
     name: TickTag
 
