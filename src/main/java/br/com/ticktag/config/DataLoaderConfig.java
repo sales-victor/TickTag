@@ -1,8 +1,6 @@
 package br.com.ticktag.config;
 
-import br.com.ticktag.domain.Role;
-import br.com.ticktag.domain.Ticket;
-import br.com.ticktag.domain.Usuario;
+import br.com.ticktag.domain.*;
 import br.com.ticktag.repository.RepositoryFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -71,17 +69,17 @@ public class DataLoaderConfig {
 
                 // Criar usuário com role de ADMIN
                 Usuario adminUser = new Usuario();
-                adminUser.setTickets(tickets);
+                Carrinho carrinhoAdmin = new Carrinho();
                 adminUser.setNome("Administrador");
                 adminUser.setEmail("admin@ticktag.com");
-                adminUser.setPassword(passwordEncoder.encode("admin123")); // Senha criptografada
-                adminUser.setCpf("00000000000");
-                adminUser.setDataNascimento(LocalDate.of(1980, 1, 1)); // Data de nascimento padrão
                 adminUser.setRoles(rolesAdmin); // Associa a role de ADMIN
+                carrinhoAdmin.setUsuario(adminUser);
+                adminUser.setCarrinho(carrinhoAdmin);
                 facade.usuarioRepository.save(adminUser);
 
                 // Criar usuário com role de ANALISTA
                 Usuario analistaUser = new Usuario();
+                Carrinho carrinhoAnalista = new Carrinho();
                 analistaUser.setTickets(tickets);
                 analistaUser.setNome("Analista");
                 analistaUser.setEmail("analista@ticktag.com");
@@ -89,10 +87,13 @@ public class DataLoaderConfig {
                 analistaUser.setCpf("11111111111");
                 analistaUser.setDataNascimento(LocalDate.of(1990, 5, 10)); // Data de nascimento padrão
                 analistaUser.setRoles(rolesAnalista); // Associa a role de ANALISTA
+                carrinhoAnalista.setUsuario(analistaUser);
+                analistaUser.setCarrinho(carrinhoAnalista);
                 facade.usuarioRepository.save(analistaUser);
 
                 // Criar usuário com role de COMERCIAL
                 Usuario comercialUser = new Usuario();
+                Carrinho carrinhoComercial = new Carrinho();
                 comercialUser.setTickets(tickets);
                 comercialUser.setNome("Comercial");
                 comercialUser.setEmail("comercial@ticktag.com");
@@ -100,6 +101,8 @@ public class DataLoaderConfig {
                 comercialUser.setCpf("22222222222");
                 comercialUser.setDataNascimento(LocalDate.of(1995, 7, 15)); // Data de nascimento padrão
                 comercialUser.setRoles(rolesComercial); // Associa a role de COMERCIAL
+                carrinhoComercial.setUsuario(comercialUser);
+                comercialUser.setCarrinho(carrinhoComercial);
                 facade.usuarioRepository.save(comercialUser);
 
                 log.info("Usuários padrão criados com sucesso.");
