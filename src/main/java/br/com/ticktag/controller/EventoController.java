@@ -1,17 +1,12 @@
 package br.com.ticktag.controller;
 
-import br.com.ticktag.dto.EventoFilterDTO;
 import br.com.ticktag.domain.Evento;
+import br.com.ticktag.dto.EventoFilterDTO;
 import br.com.ticktag.service.ServiceFacade;
 import br.com.ticktag.util.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -38,12 +33,11 @@ public class EventoController {
         return facade.eventoService.findByParams(filter);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000") // Add your frontend URL
+    // Add your frontend URL
     @PostMapping()
     public ApiResponse<Evento> save(@RequestBody Evento evento) {
         return facade.eventoService.save(evento);
     }
-
 
     @PutMapping()
     public ApiResponse<Evento> update(@RequestBody Evento evento) throws Exception {

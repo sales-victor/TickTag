@@ -36,8 +36,7 @@ public class AuthController {
             log.info("Tentativa de login para o email: {}", loginRequest.getEmail());
 
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
-            );
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             UserDetails userDetails = facade.customUserDetailsService.loadUserByUsername(loginRequest.getEmail());
@@ -54,4 +53,3 @@ public class AuthController {
         }
     }
 }
-
