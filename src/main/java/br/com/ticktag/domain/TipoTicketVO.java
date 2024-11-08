@@ -1,10 +1,8 @@
 package br.com.ticktag.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -47,6 +45,7 @@ public class TipoTicketVO implements Serializable {
     private String statusTicket;
 
     @OneToMany(mappedBy = "tipoTicketVO", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Set<TicketVO> tickets = new HashSet<>();
 }
 
